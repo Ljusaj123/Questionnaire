@@ -1,0 +1,15 @@
+node_modules/
+.angular/
+.vscode/
+.vs/
+*.log
+package-lock.json
+*.exe
+*.exe~
+*.sln
+bin/
+obj/
+*.bat
+www
+
+web.cfg
