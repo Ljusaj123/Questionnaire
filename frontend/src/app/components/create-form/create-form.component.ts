@@ -9,12 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Option } from './option/option.component';
 import { QuestionnaireService } from '@core/questionnaire.service';
-import {
-  AnswerOption,
-  Condition,
-  Question,
-  QuestionType,
-} from '@core/models';
+import { QuestionType } from '@core/models';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -30,7 +25,7 @@ import { MessageService } from 'primeng/api';
     CommonModule,
     InputTextModule,
     ButtonModule,
-    Option
+    Option,
   ],
   templateUrl: './create-form.component.html',
 })
@@ -43,6 +38,7 @@ export class CreateForm {
   public questions: { label: string; value: string }[] = [];
 
   @Output() onCreate = new EventEmitter<void>();
+  @Output() onCancel = new EventEmitter<void>();
 
   public form: FormGroup = this.initializeForm();
   public sectionIds: string[] = [];
@@ -61,22 +57,6 @@ export class CreateForm {
     private messageService: MessageService,
   ) {
     this.sectionIds = this.questionnaireService.getAllSectionIds();
-  }
-
-  ngOnInit() {
-    // this.questionnaireService.activeQuestion$.subscribe((question) => {
-    //   if (!question) return;
-
-    //   this.patchForm(question);
-    // });
-
-    // this.form.valueChanges.subscribe((value) => {
-    //   this.questionnaireService.updateActiveQuestion({
-    //     label: value.title,
-    //     answers: value.options,
-    //     conditions: value.conditions,
-    //   });
-    // });
   }
 
   getAvailableConditionOptions(index: number): string[] {
@@ -215,34 +195,4 @@ export class CreateForm {
 
     return group;
   }
-
-  // private patchForm(question: Question) {
-  //   this.form.reset();
-
-  //   this.form.get('question.title')?.setValue(question.label);
-
-  //   this.options.clear();
-
-  //   question.answers.forEach((answer: AnswerOption) => {
-  //     this.options.push(
-  //       new FormGroup({
-  //         label: new FormControl(answer.label, Validators.required),
-  //         isFlag: new FormControl(answer.isFlag ?? false),
-  //         points: new FormControl(answer.points ?? null),
-  //       }),
-  //     );
-  //   });
-
-  //   this.conditions.clear();
-
-  //   (question.conditions ?? []).forEach((condition: Condition) => {
-  //     this.conditions.push(
-  //       new FormGroup({
-  //         answerId: new FormControl(condition.answerId),
-  //         type: new FormControl(condition.type),
-  //         target: new FormControl(condition.target),
-  //       }),
-  //     );
-  //   });
-  // }
 }

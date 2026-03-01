@@ -1,49 +1,96 @@
 <p-confirm-dialog></p-confirm-dialog>
-<div>
-  <p class="text-right mb-1 mt-5" style="font-size: 0.8rem;">Naslovna-> Analitika i detekcija -> Upitnik</p>
+<div style="min-height: 85vh" [cdkContextMenuTriggerFor]="menu.contextMenu">
+  <p class="text-right mb-1 mt-5" style="font-size: 0.8rem">
+    Naslovna-> Analitika i detekcija -> Upitnik
+  </p>
   <div>
     <div class="flex justify-content-end mb-3">
       <p-button (click)="startQuestionnaire()" title="Start questionnaire">
         <i class="pi pi-play"></i>
       </p-button>
     </div>
-    <p-accordion (onOpen)="setActiveSection($event)">
-      @for (section of questionnaireData; track section.sectionId; let index= $index) {
-      <p-accordion-panel [value]="index">
-        <p-accordion-header>
-          <div class="flex align-items-center gap-2 p-2">
-            <p-button icon="pi pi-trash" text="true" severity="danger" (onClick)="handleDeleteSection($event, section.sectionId)"></p-button>
-            <span class="bg-primary p-1 text-white">{{ section.sectionId }}</span>
-            <span class="font-normal">{{ section.label }}</span>
-          </div>
-        </p-accordion-header>
-        <p-accordion-content>
-          <app-context-menu
-            #menu
-            (action)="handleContextMenuAction($event, section.sectionId)"
-          ></app-context-menu>
-  
-          <div class="ml-8 px-2 py-3 flex flex-column gap-5" [cdkContextMenuTriggerFor]="menu.contextMenu">
-            @for (question of section.questions; track $index) { 
-  
-                <app-question-item [question]="question" [sectionId]="activeSectionId || ''"></app-question-item>
-              
-            } 
-            @if ( showCreateQuestionForm && newQuestionId && activeSectionId === section.sectionId
-            ) {
-            <app-create-form
-              [sectionId]="section.sectionId"
-              [questionId]="newQuestionId"
-              [type]="questionType"
-              (onCreate)="closeCreateForm()"
-            ></app-create-form>
-            }
-          </div>
-        </p-accordion-content>
+    <app-context-menu
+    [showQuestionOption]="activeSectionId !== null"
+      #menu
+      (action)="
+        handleContextMenuAction($event, activeSectionId ?? 'S-001')
+      "
+    ></app-context-menu>
 
-      </p-accordion-panel>
-
+    <p-accordion (onOpen)="setActiveSection($event)" (onClose)="activeSectionId = null">
+      @for (
+        section of questionnaireData;
+        track section.sectionId;
+        let index = $index
+      ) {
+        <p-accordion-panel [value]="index">
+          <p-accordion-header>
+            <div class="flex align-items-center gap-2 p-2">
+              <p-button
+                icon="pi pi-trash"
+                text="true"
+                severity="danger"
+                (onClick)="handleDeleteSection($event, section.sectionId)"
+              ></p-button>
+              <span class="bg-primary p-1 text-white">{{
+                section.sectionId
+              }}</span>
+              <span class="font-normal">{{ section.label }}</span>
+            </div>
+          </p-accordion-header>
+          <p-accordion-content>
+            <div class="ml-8 px-2 py-3 flex flex-column gap-5">
+              @for (question of section.questions; track $index) {
+                <app-question-item
+                  [question]="question"
+                  [sectionId]="activeSectionId || ''"
+                ></app-question-item>
+              }
+              @if (
+                showCreateQuestionForm &&
+                newQuestionId &&
+                activeSectionId === section.sectionId
+              ) {
+                <app-create-form
+                  [sectionId]="section.sectionId"
+                  [questionId]="newQuestionId"
+                  [type]="questionType"
+                  (onCreate)="closeCreateForm()"
+                  (onCancel)="showCreateQuestionForm = false"
+                ></app-create-form>
+              }
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
       }
     </p-accordion>
   </div>
 </div>
+
+<p-dialog
+  header="Create section"
+  [(visible)]="showCreateSectionDialog"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+>
+  <div class="flex flex-column gap-3">
+    <input
+      pInputText
+      placeholder="Section name"
+      [(ngModel)]="newSectionLabel"
+    />
+
+    <div class="flex justify-content-end gap-2">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (click)="showCreateSectionDialog = false"
+      />
+      <p-button
+        label="Create"
+        [disabled]="!newSectionLabel.trim()"
+        (click)="confirmCreateSection()"
+      />
+    </div>
+  </div>
+</p-dialog>

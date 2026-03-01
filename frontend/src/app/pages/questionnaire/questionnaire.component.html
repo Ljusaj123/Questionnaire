@@ -1,28 +1,30 @@
-<div>
-  <p class="text-right mb-1 mt-5" style="font-size: 0.8rem">
-    Naslovna-> Ispunjavanje upitnika
-  </p>
+<p class="text-right mb-1 mt-5" style="font-size: 0.8rem">
+  Naslovna-> Ispunjavanje upitnika
+</p>
+<div class="bg-white p-3 border-round mt-3">
   @if (currentQuestion) {
-    <div class="bg-white p-3 border-round">
       <app-question-item
         [answer]="currentAnswer"
         [question]="currentQuestion"
         [isAdmin]="false"
         (selected)="onAnswerChange($event)"
       ></app-question-item>
-    </div>
 
-    <div class="flex flex-column gap-1 align-items-end mt-3">
-      <div class="flex align-items-center gap-2">
-        <p-button (click)="goBack()" [disabled]="!history.length">
-          Nazad
-        </p-button>
+      <div class="flex flex-column gap-1 align-items-end mt-3">
+        <div class="flex align-items-center gap-2">
+          <p-button
+            (click)="goBack()"
+            [disabled]="!history.length"
+            severity="secondary"
+          >
+            Back
+          </p-button>
 
-        <p-button (click)="goNext()" [disabled]="">Dalje</p-button>
+          <p-button (click)="goNext()" [disabled]="">Next</p-button>
+        </div>
+        @if (showError) {
+          <small class="text-red-500">Enter answer first</small>
+        }
       </div>
-      @if (showError) {
-        <small class="text-red-500">Enter answer first</small>
-      }
-    </div>
   }
 </div>

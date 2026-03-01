@@ -13,7 +13,10 @@ import { RestResponse } from '@core/rest-response.model';
 import { AccordionModule, AccordionTabOpenEvent } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ConfirmDialog } from "primeng/confirmdialog";
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-admin-page',
@@ -26,8 +29,11 @@ import { ConfirmDialog } from "primeng/confirmdialog";
     CdkMenuModule,
     AccordionModule,
     QuestionItem,
-    ConfirmDialog
-],
+    ConfirmDialog,
+    DialogModule,
+    FormsModule,
+    InputTextModule
+  ],
   providers: [ConfirmationService],
   templateUrl: './admin.component.html',
 })
@@ -40,6 +46,8 @@ export class Admin implements OnInit {
   public newQuestionId: string | null = null;
 
   public questionType: QuestionType = '';
+  public newSectionLabel: string = "";
+  public showCreateSectionDialog: boolean = false;
 
   constructor(
     private questionnaireService: QuestionnaireService,
@@ -66,19 +74,9 @@ export class Admin implements OnInit {
 
   handleContextMenuAction(action: CreateAction, sectionId: string) {
     if (action.type === 'section') {
-      this.questionnaireService.createSection().subscribe({
-        next: (response: RestResponse) => {
-          if (response.message === 'success') {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Create section',
-              detail: response.data,
-            });
-
-            this.questionnaireService.loadSections();
-          }
-        },
-      });
+      this.newSectionLabel = '';
+      this.showCreateSectionDialog = true;
+      return;
     }
     this.questionType = action.questionType;
 
@@ -94,6 +92,23 @@ export class Admin implements OnInit {
       );
       this.showCreateQuestionForm = true;
     }
+  }
+
+  confirmCreateSection() {
+    this.questionnaireService.createSection(this.newSectionLabel).subscribe({
+      next: (response: RestResponse) => {
+        if (response.message === 'success') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Create section',
+            detail: response.data,
+          });
+
+          this.showCreateSectionDialog = false;
+          this.questionnaireService.loadSections();
+        }
+      },
+    });
   }
 
   closeCreateForm() {

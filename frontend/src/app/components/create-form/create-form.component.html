@@ -6,7 +6,7 @@
         <input pInputText placeholder="Question" formControlName="title" class="w-full" />
     </div>
     <div formArrayName="options" class="py-2 pl-6">
-      
+
       @for (option of options.controls; let i = $index; track i) {
       <app-option [type]="type" [formGroup]="option"></app-option>
       } 
@@ -37,7 +37,8 @@
     </div>
   </div>
   }
-  <div class="flex justify-content-end">
-       <p-button (onClick)="handleCreateQestion()">Create</p-button>
+  <div class="flex justify-content-end gap-2 align-items-center">
+    <p-button (onClick)="this.onCancel.emit();" severity="secondary">Cancel</p-button>
+    <p-button (onClick)="handleCreateQestion()">Create</p-button>
   </div>
 </form>

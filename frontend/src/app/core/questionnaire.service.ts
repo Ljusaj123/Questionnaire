@@ -38,13 +38,13 @@ export class QuestionnaireService {
       });
   }
 
-  createSection() {
+  createSection(sectionLabel: string) {
     const sections = this.sections;
     const lastId = sections.at(-1)?.sectionId ?? 'S-000';
 
     const section: Section = {
       sectionId: this.nextId(lastId),
-      label: 'New section',
+      label: sectionLabel,
       questions: [],
     };
     return this.http.post<RestResponse>(`${this.apiUrl}/sections`, { section });
@@ -137,7 +137,10 @@ export class QuestionnaireService {
     currentSectionIndex: number,
     currentQuestionIndex: number,
   ) {
-    return this.sections[currentSectionIndex]?.questions[currentQuestionIndex] ?? null;
+    return (
+      this.sections[currentSectionIndex]?.questions[currentQuestionIndex] ??
+      null
+    );
   }
 
   getCurrentSection(currentSectionIndex: number) {
