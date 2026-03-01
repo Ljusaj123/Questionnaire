@@ -1,36 +1,70 @@
 <div class="flex align-items-center gap-3 mt-2" [formGroup]="formGroup">
-    @if (hasOptions(type)) { @switch (type) { @case ('check-boxes') {
-    <p-checkbox [binary]="true"/>
-    } @case ('radio') {
-      <p-radiobutton></p-radiobutton>
-    } @case ('drop-down') {
-    <i class="pi pi-angle-down"></i>
-    } }
-      <input pInputText placeholder="Option" formControlName="label" class="w-full"/>
+  @if (hasOptions(type)) {
+    @switch (type) {
+      @case ("check-boxes") {
+        <i class="pi pi-check-square"></i>
+      }
 
-    } @else { 
-      
-      @switch (type){ 
-        @case('short-text'){
+      @case ("radio") {
+        <i class="pi pi-circle"></i>
+      }
 
-          <input pInputText disabled placeholder="User will enter short text"/>
-
-        } @case('long-text'){
-          <textarea pInputText rows="4" placeholder="User will enter long text" disabled></textarea>
-
-        } @case('date'){
-          <p-datepicker dateFormat="dd.mm.yy" disabled [showIcon]="true" [showOnFocus]="false"/>
-
-        } @case('document'){
-        <div class="label-input">
-          <i>upload_file</i>
+      @case ("drop-down") {
+        <i class="pi pi-angle-down"></i>
+      }
+    }
+    <input
+      pInputText
+      placeholder="Option"
+      formControlName="label"
+      class="w-full"
+    />
+  } @else {
+    @switch (type) {
+      @case ("short-text") {
+        <input pInputText disabled placeholder="User will enter short text" />
+      }
+      @case ("long-text") {
+        <textarea
+          pInputText
+          rows="4"
+          placeholder="User will enter long text"
+          disabled
+        ></textarea>
+      }
+      @case ("date") {
+        <p-datepicker
+          dateFormat="dd.mm.yy"
+          disabled
+          [showIcon]="true"
+          [showOnFocus]="false"
+        />
+      }
+      @case ("document") {
+        <div class="flex gap-3 align-items-center">
+          <p-fileupload
+            mode="basic"
+            disabled="true"
+            name="demo[]"
+            chooseIcon="pi pi-upload"
+            accept=".pdf,.doc,.docx"
+            maxFileSize="1000000"
+            url="https://www.primefaces.org/cdn/api/upload.php"
+            [auto]="true"
+            chooseLabel="Upload document"
+          />
           <span>User will upload a document</span>
         </div>
-
-        } } }
+      }
+    }
+  }
   <div class="flex gap-1">
     <p-checkbox formControlName="isFlag" [binary]="true" inputId="flag" />
     <label for="flag" class="white-space-nowrap">Red flag</label>
   </div>
-  <p-inputNumber placeholder="Points" formControlName="points" [inputStyle]="{ width: '100px' }"/>
+  <p-inputNumber
+    placeholder="Points"
+    formControlName="points"
+    [inputStyle]="{ width: '100px' }"
+  />
 </div>

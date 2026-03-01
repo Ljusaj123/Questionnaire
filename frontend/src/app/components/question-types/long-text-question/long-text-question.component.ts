@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AnswerOption } from '@core/models';
 import { TextareaModule } from 'primeng/textarea';
@@ -10,20 +10,8 @@ import { TextareaModule } from 'primeng/textarea';
 })
 export class LongTextQuestion {
   @Input() answers: AnswerOption[] = [];
-  @Input() showFlag: boolean = true;
+  @Input() isAdmin: boolean = true;
+  @Input() currentAnswer: string = '';
 
   @Output() answered = new EventEmitter<string>();
-
-  public enteredValue: string | null = null;
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['answers'] && !changes['answers'].firstChange) {
-      this.enteredValue = null;
-    }
-  }
-
-  onTextChange(event: Event) {
-    this.enteredValue = (event.target as HTMLInputElement | HTMLTextAreaElement).value;
-    this.answered.emit(this.enteredValue);
-  }
 }

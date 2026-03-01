@@ -5,8 +5,8 @@ import { QuestionType } from '@core/models';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DatePickerModule } from 'primeng/datepicker';
-import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { FileUploadModule } from 'primeng/fileupload';
 
 
 @Component({
@@ -16,9 +16,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ReactiveFormsModule,
     InputTextModule,
     CheckboxModule,
-    RadioButtonModule,
     DatePickerModule,
-    InputNumberModule
+    InputNumberModule,
+    FileUploadModule
 ],
   templateUrl: './option.component.html',
 })

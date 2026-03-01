@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Question, QuestionType, Section } from '@core/models';
-import { BehaviorSubject, tap } from 'rxjs';
+import { Question, Section } from '@core/models';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { RestResponse } from './rest-response.model';
 
@@ -13,19 +13,18 @@ export class QuestionnaireService {
   public activeQuestion$ = this.activeQuestionSubject.asObservable();
 
   private sectionsSubject = new BehaviorSubject<Section[]>([]);
-  public sections$ = this.sectionsSubject.asObservable();
+  readonly sections$ = this.sectionsSubject.asObservable();
 
   public activeSection: string = '';
 
   private apiUrl: string;
-  private questionnaireData: Section[] = [];
 
   constructor(private http: HttpClient) {
     this.apiUrl = environment.apiUrl;
     this.loadSections();
   }
 
-  get sections() {
+  private get sections(): Section[] {
     return this.sectionsSubject.value;
   }
 
@@ -34,17 +33,17 @@ export class QuestionnaireService {
       .get<RestResponse>(`${this.apiUrl}/sections`)
       .subscribe((response) => {
         if (response.message === 'success') {
-          this.questionnaireData = response.data;
           this.sectionsSubject.next(response.data);
         }
       });
   }
 
   createSection() {
-    const lastSectionId =
-      this.questionnaireData[this.questionnaireData.length - 1].sectionId;
+    const sections = this.sections;
+    const lastId = sections.at(-1)?.sectionId ?? 'S-000';
+
     const section: Section = {
-      sectionId: this.nextId(lastSectionId),
+      sectionId: this.nextId(lastId),
       label: 'New section',
       questions: [],
     };
@@ -52,12 +51,8 @@ export class QuestionnaireService {
   }
 
   deleteSection(sectionId: string) {
-    return this.http.delete<RestResponse>(`${this.apiUrl}/sections/${sectionId}`);
-  }
-
-  getQuestion(questionId: string) {
-    return this.http.get<RestResponse>(
-      `${this.apiUrl}/questions/${questionId}`,
+    return this.http.delete<RestResponse>(
+      `${this.apiUrl}/sections/${sectionId}`,
     );
   }
 
@@ -75,11 +70,11 @@ export class QuestionnaireService {
   }
 
   getAllSectionIds(): string[] {
-    return this.questionnaireData.map((section) => section.sectionId);
+    return this.sections.map((section: Section) => section.sectionId);
   }
 
   getQuestionIdsBySection(sectionId: string): string[] {
-    const section = this.questionnaireData.find(
+    const section = this.sections.find(
       (section: Section) => section.sectionId === sectionId,
     );
 
@@ -91,8 +86,8 @@ export class QuestionnaireService {
   }
 
   getNextQuestionId(activeSectionId: string) {
-    const section = this.questionnaireData.find(
-      (section) => section.sectionId === activeSectionId,
+    const section = this.sections.find(
+      (section: Section) => section.sectionId === activeSectionId,
     );
     if (!section) return null;
 
@@ -108,15 +103,15 @@ export class QuestionnaireService {
   }
 
   removeEditingMode(): void {
-    this.questionnaireData.forEach((section) => {
-      section.questions.forEach((question) => {
+    this.sections.forEach((section: Section) => {
+      section.questions.forEach((question: Question) => {
         delete question.isEditing;
       });
     });
   }
 
   setActiveQuestion(sectionId: string, questionId: string): void {
-    const section = this.questionnaireData.find(
+    const section = this.sections.find(
       (section: Section) => section.sectionId === sectionId,
     );
     this.activeSection = sectionId;
@@ -142,17 +137,15 @@ export class QuestionnaireService {
     currentSectionIndex: number,
     currentQuestionIndex: number,
   ) {
-    return this.questionnaireData[currentSectionIndex].questions[
-      currentQuestionIndex
-    ];
+    return this.sections[currentSectionIndex]?.questions[currentQuestionIndex] ?? null;
   }
 
   getCurrentSection(currentSectionIndex: number) {
-    return this.questionnaireData[currentSectionIndex];
+    return this.sections[currentSectionIndex];
   }
 
   private syncToStore(updated: Question): void {
-    const section = this.questionnaireData.find(
+    const section = this.sections.find(
       (section: Section) => section.sectionId === this.activeSection,
     );
     if (!section) return;

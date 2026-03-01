@@ -36,7 +36,8 @@ export class QuestionItem {
   @Input() sectionId: string = '';
 
   @Output() selected = new EventEmitter<any>();
-  @Input() showFlag: boolean = true;
+  @Input() isAdmin: boolean = true;
+  @Input() answer: any
 
   constructor(
     private questionnaireService: QuestionnaireService,
@@ -47,8 +48,6 @@ export class QuestionItem {
   onAnswerChange(value: any) {
     this.selected.emit(value);
   }
-
-  confirm1(event: Event) {}
 
   handleDeleteQuestion(questionId: string) {
     this.confirmationService.confirm({

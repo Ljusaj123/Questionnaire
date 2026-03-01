@@ -64,19 +64,19 @@ export class CreateForm {
   }
 
   ngOnInit() {
-    this.questionnaireService.activeQuestion$.subscribe((question) => {
-      if (!question) return;
+    // this.questionnaireService.activeQuestion$.subscribe((question) => {
+    //   if (!question) return;
 
-      this.patchForm(question);
-    });
+    //   this.patchForm(question);
+    // });
 
-    this.form.valueChanges.subscribe((value) => {
-      this.questionnaireService.updateActiveQuestion({
-        label: value.title,
-        answers: value.options,
-        conditions: value.conditions,
-      });
-    });
+    // this.form.valueChanges.subscribe((value) => {
+    //   this.questionnaireService.updateActiveQuestion({
+    //     label: value.title,
+    //     answers: value.options,
+    //     conditions: value.conditions,
+    //   });
+    // });
   }
 
   getAvailableConditionOptions(index: number): string[] {
@@ -216,33 +216,33 @@ export class CreateForm {
     return group;
   }
 
-  private patchForm(question: Question) {
-    this.form.reset();
+  // private patchForm(question: Question) {
+  //   this.form.reset();
 
-    this.form.get('question.title')?.setValue(question.label);
+  //   this.form.get('question.title')?.setValue(question.label);
 
-    this.options.clear();
+  //   this.options.clear();
 
-    question.answers.forEach((answer: AnswerOption) => {
-      this.options.push(
-        new FormGroup({
-          label: new FormControl(answer.label, Validators.required),
-          isFlag: new FormControl(answer.isFlag ?? false),
-          points: new FormControl(answer.points ?? null),
-        }),
-      );
-    });
+  //   question.answers.forEach((answer: AnswerOption) => {
+  //     this.options.push(
+  //       new FormGroup({
+  //         label: new FormControl(answer.label, Validators.required),
+  //         isFlag: new FormControl(answer.isFlag ?? false),
+  //         points: new FormControl(answer.points ?? null),
+  //       }),
+  //     );
+  //   });
 
-    this.conditions.clear();
+  //   this.conditions.clear();
 
-    (question.conditions ?? []).forEach((condition: Condition) => {
-      this.conditions.push(
-        new FormGroup({
-          answerId: new FormControl(condition.answerId),
-          type: new FormControl(condition.type),
-          target: new FormControl(condition.target),
-        }),
-      );
-    });
-  }
+  //   (question.conditions ?? []).forEach((condition: Condition) => {
+  //     this.conditions.push(
+  //       new FormGroup({
+  //         answerId: new FormControl(condition.answerId),
+  //         type: new FormControl(condition.type),
+  //         target: new FormControl(condition.target),
+  //       }),
+  //     );
+  //   });
+  // }
 }

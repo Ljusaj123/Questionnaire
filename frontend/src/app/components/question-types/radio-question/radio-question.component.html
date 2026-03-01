@@ -1,16 +1,20 @@
-<mat-radio-group
-  [(ngModel)]="selectedValue"
-  (change)="onSelectionChange($event)"
->
+<div class="flex flex-column px-1 gap-3">
   @for (answer of answers; track $index) {
-    <p-radiobutton
-      [value]="answer.label"
-      [ngClass]="{ 'radio--alert': answer.isFlag && showFlag }"
-    >
-      {{ answer.label }}
-      @if(answer.isFlag && showFlag ){
-        <span class="bg-gray-200 ml-2 text-sm p-1 text-black-alpha-90">{{ answer.points }}pt</span>
+    <div>
+      <p-radiobutton
+        name="radioGroup"
+        [value]="answer.label"
+        [inputId]="answer.label"
+        [(ngModel)]="currentAnswer"
+        (change)="this.selected.emit(this.currentAnswer)"
+      />
+      <label [for]="answer.label" class="ml-2">{{ answer.label }}</label>
+
+      @if (answer.isFlag && isAdmin) {
+        <span class="bg-gray-200 ml-2 text-sm p-1 text-black-alpha-90"
+          >{{ answer.points }}pt</span
+        >
       }
-    </p-radiobutton>
+    </div>
   }
-</mat-radio-group>
+</div>

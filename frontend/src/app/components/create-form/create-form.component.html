@@ -6,9 +6,11 @@
         <input pInputText placeholder="Question" formControlName="title" class="w-full" />
     </div>
     <div formArrayName="options" class="py-2 pl-6">
+      
       @for (option of options.controls; let i = $index; track i) {
       <app-option [type]="type" [formGroup]="option"></app-option>
-      } @if (hasOptions(type)) {
+      } 
+      @if (hasOptions(type)) {
         <p-button label="Add option" icon="pi pi-plus" styleClass="mt-3 text-sm" (click)="addOption()" variant="text"></p-button>
       }
     </div>

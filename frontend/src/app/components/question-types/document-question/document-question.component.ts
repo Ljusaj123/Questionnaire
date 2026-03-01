@@ -2,9 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AnswerOption } from '@core/models';
 
 import {
-  FileUploadEvent,
+  FileSelectEvent,
   FileUploadModule,
-  UploadEvent,
 } from 'primeng/fileupload';
 
 @Component({
@@ -14,19 +13,17 @@ import {
 })
 export class DocumentQuestion {
   @Input() answers: AnswerOption[] = [];
-  @Input() showFlag: boolean = true;
+  @Input() isAdmin: boolean = true;
+  @Input() currentAnswer: File | null = null;
 
   @Output() answered = new EventEmitter<File>();
 
-  fileName: string | null = null;
-
-  onFileChange(event: FileUploadEvent) {
-    console.log(event);
-    if (!event.files || event.files.length === 0) return;
-    this.fileName = event.files[0].name;
+  onFileSelect(event: FileSelectEvent) {
+    if (!event.files?.length) return;
 
     const file = event.files[0];
 
+    this.currentAnswer = file;
     this.answered.emit(file);
   }
 }

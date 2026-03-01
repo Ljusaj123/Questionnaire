@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Condition, Question, Section } from '@core/models';
 
 import { QuestionItem } from 'src/app/components/question-item/question-item.component';
-import { RestResponse } from '@core/rest-response.model';
 
 import { ButtonModule } from 'primeng/button';
 import { QuestionnaireService } from '@core/questionnaire.service';
@@ -20,6 +19,7 @@ export class Questionnaire {
   public answersState = new Map<string, string | string[]>();
 
   public questionnaireData: Section[] = [];
+  public showError: boolean = false;
 
   constructor(private questionnaireService: QuestionnaireService) {}
 
@@ -36,13 +36,26 @@ export class Questionnaire {
     );
   }
 
+  get currentAnswer() {
+    return this.answersState.get(this.getKey());
+  }
+
   onAnswerChange(value: string | string[]) {
-    this.answersState.set(this.currentQuestion.questionId, value);
+    const key = this.getKey();
+    this.answersState.set(key, value);
+  }
+
+  private getKey(): string {
+    const section = this.questionnaireData[this.currentSectionIndex];
+    return `${section.sectionId}_${this.currentQuestion.questionId}`;
   }
 
   goNext() {
-    const answer = this.answersState.get(this.currentQuestion.questionId);
-    if (!answer) return;
+    const answer = this.answersState.get(this.getKey());
+    if (!answer) {
+      this.showError = true;
+      return;
+    } else this.showError = false;
 
     const currentHistoryEntry = {
       section: this.currentSectionIndex,

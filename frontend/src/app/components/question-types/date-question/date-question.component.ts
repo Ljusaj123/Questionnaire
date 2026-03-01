@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AnswerOption } from '@core/models';
 import { FormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -10,20 +10,8 @@ import { DatePickerModule } from 'primeng/datepicker';
 })
 export class DateQuestion {
   @Input() answers: AnswerOption[] = [];
-  @Input() showFlag: boolean = true;
+  @Input() isAdmin: boolean = true;
+  @Input() currentAnswer: Date = new Date();
 
   @Output() answered = new EventEmitter<Date>();
-
-  public selectedValue: string | null = null;
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['answers'] && !changes['answers'].firstChange) {
-      this.selectedValue = null;
-    }
-  }
-
-  onDateChange(event: any) {
-    this.selectedValue = event.value;
-    this.answered.emit(event.value);
-  }
 }

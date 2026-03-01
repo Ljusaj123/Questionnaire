@@ -1,13 +1,14 @@
 <p-select
   placeholder="Select an option"
-  (selectionChange)="onSelectionChange($event)"
   [options]="answers"
+  [(ngModel)]="currentAnswer"
+  (onChange)="this.selected.emit(this.currentAnswer)"
   appendTo="body"
 >
   <ng-template pTemplate="item" let-answer>
     <span>{{ answer.label }}</span>
 
-    @if (answer.isFlag && showFlag) {
+    @if (answer.isFlag && isAdmin) {
       <span class="bg-gray-200 ml-2 text-sm p-1 text-black-alpha-90">
         {{ answer.points }}pt
       </span>

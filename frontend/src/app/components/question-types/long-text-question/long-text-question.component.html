@@ -4,11 +4,11 @@
     cols="30"
     pTextarea
     placeholder="Your answer"
-    [(ngModel)]="enteredValue"
-    (ngModelChange)="answered.emit($event)"
+    [(ngModel)]="currentAnswer"
+    (ngModelChange)="this.answered.emit(this.currentAnswer);"
   ></textarea>
 
-  @if (answers[0].isFlag && showFlag) {
+  @if (answers[0].isFlag && isAdmin) {
   <span class="bg-gray-200 ml-2 text-sm p-1 text-black-alpha-90">{{ answers[0].points }}pt</span>
   }
 </div>

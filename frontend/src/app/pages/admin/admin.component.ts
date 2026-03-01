@@ -62,7 +62,6 @@ export class Admin implements OnInit {
     const index = event.index;
     const section = this.questionnaireData[index];
     this.activeSectionId = section?.sectionId;
-    console.log(this.activeSectionId);
   }
 
   handleContextMenuAction(action: CreateAction, sectionId: string) {
