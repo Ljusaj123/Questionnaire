@@ -8,8 +8,6 @@ router.post('/sections', questionnareController.createSection)
 router.delete('/sections/:id', questionnareController.deleteSection)
 
 router.post('/questions', questionnareController.createQuestion)
-router.put('/questions', questionnareController.updateQuestion)
-router.get('/questions/:id', questionnareController.getQuestion)
-router.delete('/questions/:id', questionnareController.deleteQuestion)
+router.delete('/questions/:sectionId/:questionId', questionnareController.deleteQuestion)
 
 module.exports = router;

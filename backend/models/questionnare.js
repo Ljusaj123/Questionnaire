@@ -4,20 +4,19 @@ const QuestionTypeEnum = [
   'short-text',
   'long-text',
   'drop-down',
-  'multiple',
+  'radio',
   'check-boxes',
   'date',
   'document',
   ''
 ];
 
-const ConditionTargetTypeEnum = ['section', 'question', null];
+const ConditionTargetTypeEnum = ['Section', 'Question', null];
 
 const AnswerOptionSchema = new mongoose.Schema(
   {
-    label: { type: String, required: true },
+    label: { type: String },
     isFlag: { type: Boolean, default: false },
-    comment: { type: String },
     points: { type: Number }
   },
   { _id: false }
@@ -25,13 +24,13 @@ const AnswerOptionSchema = new mongoose.Schema(
 
 const ConditionSchema = new mongoose.Schema(
   {
-    answerId: { type: String, required: true },
+    answerId: { type: String },
     type: {
       type: String,
       enum: ConditionTargetTypeEnum,
       default: null
     },
-    target: { type: String, required: true }
+    target: { type: String }
   },
   { _id: false }
 );
@@ -44,14 +43,13 @@ const QuestionSchema = new mongoose.Schema({
     enum: QuestionTypeEnum,
     required: true
   },
-  isEditing: { type: Boolean},
   conditions: {
     type: [ConditionSchema],
     default: []
   },
   answers: {
     type: [AnswerOptionSchema],
-    required: true
+    default: []
   }
 });
 

@@ -1,0 +1,53 @@
+<div
+  class="bg-primary flex justify-content-between align-items-center w-full p-3 text-white"
+>
+  <div>
+    <i class="pi pi-bars mr-3 cursor-pointer" (click)="visible = true"></i>
+    <span class="header-title" style="font-size: 1.3rem">{{headerText}}</span>
+  </div>
+
+  <div class="flex gap-3 align-items-center">
+    <i class="pi pi-bell" style="font-size: 1.3rem"></i>
+    <i class="pi pi-info-circle" style="font-size: 1.3rem"></i>
+    <span id="hr-text" style="font-size: 1.3rem">HR</span>
+  </div>
+</div>
+
+<p-drawer [(visible)]="visible" class="sidenav-container">
+  <ng-template #header>
+    <div class="flex gap-2 p-1">
+      <div class="border-round-3xl flex align-items-center justify-content-center font-bold bg-primary" style="height: 44px; width: 44px;">
+        <span>IP</span>
+      </div>
+      <div class="flex flex-column">
+        <span class="font-bold" style="font-size: 1.3rem;">Marko Marković</span>
+        <span style="font-size: 0.8rem;">Superadmin</span>
+      </div>
+    </div>
+  </ng-template>
+    <ul class="px-2">
+      <li class="list-none">
+        <a class="flex align-items-center gap-1 py-3 "> <i class="pi pi-comment mr-1"></i> Prijave </a>
+      </li>
+      <li class="list-none">
+        <a class="flex align-items-center gap-1 py-3"> <i class="pi pi-home mr-1"></i> Projekti </a>
+      </li>
+      <li class="list-none">
+        <a class="flex align-items-center gap-1 py-3">
+          <i class="pi pi-chart-bar mr-1"></i> Analitika i detekcija
+        </a>
+      </li>
+      <li class="list-none">
+        <a class="flex align-items-center gap-1 py-3"> <i class="pi pi-file mr-1"></i> Izvještavanje </a>
+      </li>
+      <li class="list-none">
+        <a class="flex align-items-center gap-1 py-3">
+          <i class="pi pi-users mr-1"></i> Administracija korisnika
+        </a>
+      </li>
+      <li class="list-none">
+        <a class="flex align-items-center gap-1 py-3"> <i class="pi pi-cog mr-1"></i> Postavke </a>
+      </li>
+    </ul>
+
+</p-drawer>

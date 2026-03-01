@@ -1,0 +1,16 @@
+<mat-radio-group
+  [(ngModel)]="selectedValue"
+  (change)="onSelectionChange($event)"
+>
+  @for (answer of answers; track $index) {
+    <p-radiobutton
+      [value]="answer.label"
+      [ngClass]="{ 'radio--alert': answer.isFlag && showFlag }"
+    >
+      {{ answer.label }}
+      @if(answer.isFlag && showFlag ){
+        <span class="bg-gray-200 ml-2 text-sm p-1 text-black-alpha-90">{{ answer.points }}pt</span>
+      }
+    </p-radiobutton>
+  }
+</mat-radio-group>

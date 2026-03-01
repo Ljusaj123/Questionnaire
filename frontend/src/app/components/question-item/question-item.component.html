@@ -1,0 +1,63 @@
+<p-confirmdialog />
+<div class="flex flex-column">
+  <div>
+    <div class="flex align-items-center gap-3 mb-3 -ml-6">
+      <p-button icon="pi pi-trash text-sm" severity="danger" title="Remove question" text="true" (onClick)="handleDeleteQuestion(question.questionId)"></p-button>
+      <span class="font-bold text-black-alpha-90"> {{ question.questionId }}</span>
+      <span> {{ question.label }}</span>
+    </div>
+  </div>
+
+
+  @switch (question.type) { @case ('short-text') {
+
+  <app-short-text-question
+    [answers]="question.answers"
+    [showFlag]="showFlag"
+    (answered)="onAnswerChange($event)"
+  >
+  </app-short-text-question>
+  } @case ('long-text') {
+  <app-long-text-question
+    [answers]="question.answers"
+    [showFlag]="showFlag"
+    (answered)="onAnswerChange($event)"
+  >
+  </app-long-text-question>
+  } @case ('radio') {
+  <app-radio-question
+    [answers]="question.answers"
+    [showFlag]="showFlag"
+    (selected)="onAnswerChange($event)"
+  >
+  </app-radio-question>
+  } @case ('check-boxes') {
+  <app-checkbox-question
+    [answers]="question.answers"
+    [showFlag]="showFlag"
+    (selected)="onAnswerChange($event)"
+  >
+  </app-checkbox-question>
+  } @case ('drop-down') {
+  <app-dropdown-question
+    [answers]="question.answers"
+    [showFlag]="showFlag"
+    (selected)="onAnswerChange($event)"
+  >
+  </app-dropdown-question>
+  } @case ('date') {
+  <app-date-question
+    [answers]="question.answers"
+    [showFlag]="showFlag"
+    (answered)="onAnswerChange($event)"
+  >
+  </app-date-question>
+  } @case ('document') {
+  <app-document-question
+    [answers]="question.answers"
+    [showFlag]="showFlag"
+    (answered)="onAnswerChange($event)"
+  >
+  </app-document-question>
+  } }
+</div>

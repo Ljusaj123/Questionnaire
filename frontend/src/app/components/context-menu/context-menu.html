@@ -1,0 +1,47 @@
+<ng-template #contextMenu>
+  <div class="flex flex-column bg-white align-items-center border-round gap-3 p-3 shadow-2 text-primary-500" cdkMenu>
+    <i cdkMenuItem [cdkMenuTriggerFor]="questionMenu" class="pi pi-plus-circle cursor-pointer" style="font-size: 1.5rem;"></i>
+    <i cdkMenuItem class="pi pi-copy cursor-pointer" style="font-size: 1.5rem;" ></i>
+    <i cdkMenuItem class="pi pi-share-alt cursor-pointer" style="font-size: 1.5rem;"></i>
+  </div>
+</ng-template>
+
+<ng-template #questionMenu>
+  <div class="bg-white shadow-2 border-round p-2" style="width: 220px;" cdkMenu>
+    <div cdkMenuItem class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round" (click)="createSection()">
+      <i class="pi pi-objects-column"></i>
+      <span> New section </span>
+    </div>
+    <p-divider styleClass="my-1"/>
+    <div cdkMenuItem class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round" (click)="createQuestion('short-text')" >
+      <i class="pi pi-align-left"></i>
+      <span> Short text </span>
+    </div>
+    <div cdkMenuItem class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round" (click)="createQuestion('long-text')" >
+      <i class="pi pi-align-justify"></i>
+      <span> Long text </span>
+    </div>
+    <p-divider styleClass="my-1"/>
+    <div cdkMenuItem class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round" (click)="createQuestion('radio')" >
+      <i class="pi pi-circle"></i>
+      <span> Radio </span>
+    </div>
+    <div cdkMenuItem class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round" (click)="createQuestion('check-boxes')" >
+      <i class="pi pi-stop"></i>
+      <span> Check-boxes </span>
+    </div>
+    <div cdkMenuItem class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round" (click)="createQuestion('drop-down')" >
+      <i class="pi pi-angle-down"></i>
+      <span> Drop-down </span>
+    </div>
+    <p-divider styleClass="my-1"/>
+    <div cdkMenuItem class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round" (click)="createQuestion('date')" >
+      <i class="pi pi-calendar-plus"></i>
+      <span> Date </span>
+    </div>
+    <div cdkMenuItem class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round" (click)="createQuestion('document')">
+      <i class="pi pi-file-arrow-up"></i>
+      <span> Document </span>
+    </div>
+  </div>
+</ng-template>

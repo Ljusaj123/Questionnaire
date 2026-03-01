@@ -1,0 +1,27 @@
+<div class="flex flex-column align-items-start gap-2">
+  <p-fileupload
+    mode="basic"
+    name="demo[]"
+    chooseIcon="pi pi-upload"
+    accept=".pdf,.doc,.docx"
+    maxFileSize="1000000"
+    url="https://www.primefaces.org/cdn/api/upload.php"
+    [auto]="true"
+    chooseLabel="Upload document"
+    (onUpload)="onFileChange($event)"
+  />
+
+  <div>
+      <span class="text-secondary text-sm"> Supported formats: PDF, DOCX </span>
+
+    @if (fileName) {
+      <span class="font-semibold">{{ fileName }}</span>
+    }
+
+    @if (answers[0].isFlag && showFlag) {
+      <span class="bg-gray-200 ml-2 text-sm p-1 text-black-alpha-90"
+        >{{ answers[0].points }}pt</span
+      >
+    }
+  </div>
+</div>

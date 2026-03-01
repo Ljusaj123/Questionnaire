@@ -1,0 +1,15 @@
+<div class="flex align-items-end gap-2">
+  <p-datepicker
+    placeholder="Choose a date"
+    [showIcon]="true"
+    (dateChange)="onDateChange($event)"
+    dateFormat="dd.mm.yy"
+    appendTo="body"
+  />
+
+  @if (answers[0].isFlag && showFlag) {
+    <span class="bg-gray-200 ml-2 text-sm p-1 text-black-alpha-90"
+      >{{ answers[0].points }}pt</span
+    >
+  }
+</div>

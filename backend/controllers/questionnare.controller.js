@@ -12,29 +12,14 @@ const questionnareController = {
 		}
 	},
 
-	getQuestion: async (req, res) => {
-		const { id } = req.params;
-
-		if (!id) {
-			return res.status(400).json(new RestResponse("error", "Id not provided"));
-		}
-		try {
-			const question = await QuestionnareRepository.getQuestion(id);
-			return res.status(200).json(new RestResponse("success", question));
-		} catch (error) {
-			const statusCode = error.statusCode || 500;
-			res.status(statusCode).json(new RestResponse("error", error.message));
-		}
-	},
-
 	createQuestion: async (req, res) => {
-		const { question } = req.body;
+		const { question, sectionId } = req.body;
 
 		if (!question) {
 			return res.status(400).json(new RestResponse("error", "Question not provided"));
 		}
 		try {
-			await QuestionnareRepository.createQuestion(question);
+			await QuestionnareRepository.createQuestion(question, sectionId);
 			return res.status(200).json(new RestResponse("success", "Question created successfully"));
 		} catch (error) {
 			const statusCode = error.statusCode || 500;
@@ -42,29 +27,14 @@ const questionnareController = {
 		}
 	},
 
-	updateQuestion: async (req, res) => {
-		const { question } = req.body;
-
-		if (!question) {
-			return res.status(400).json(new RestResponse("error", "Question not provided"));
-		}
-		try {
-			await QuestionnareRepository.updateQuestion(question);
-			return res.status(200).json(new RestResponse("success", "Question updated successfully"));
-		} catch (error) {
-			const statusCode = error.statusCode || 500;
-			res.status(statusCode).json(new RestResponse("error", error.message));
-		}
-	},
-
 	deleteQuestion: async (req, res) => {
-		const { id } = req.body;
+		const { sectionId, questionId } = req.params;
 
-		if (!id) {
+		if (!sectionId || !questionId) {
 			return res.status(400).json(new RestResponse("error", "Id not provided"));
 		}
 		try {
-			await QuestionnareRepository.deleteQuestion(id);
+			await QuestionnareRepository.deleteQuestion(sectionId, questionId);
 			return res.status(200).json(new RestResponse("success", "Question deleted successfully"));
 		} catch (error) {
 			const statusCode = error.statusCode || 500;

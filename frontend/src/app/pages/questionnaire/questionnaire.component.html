@@ -1,0 +1,22 @@
+<div>
+  <p class="text-right mb-1 mt-5" style="font-size: 0.8rem;">Naslovna-> Ispunjavanje upitnika</p>
+    <div class="bg-white p-3 border-round">
+      <app-question-item
+        [question]="currentQuestion"
+        [showFlag]="false"
+        (selected)="onAnswerChange($event)"
+      ></app-question-item>
+    </div>
+
+    <div class="flex gap-3 align-items-center justify-content-end mt-3">
+      <p-button
+        (click)="goBack()"
+        [disabled]="!history.length"
+        [class]="!history.length ? 'btn--disabled' : 'btn--normal'"
+      >
+        Nazad
+      </p-button>
+
+      <p-button (click)="goNext()" class="btn--accent">Dalje</p-button>
+    </div>
+</div>

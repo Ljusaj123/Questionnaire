@@ -1,101 +1,57 @@
-
 const Section = require("../models/questionnare.js");
 const HttpError = require("../standard/http-error.js");
 
 class QuestionnareRepository {
-  static async getSections() {
-    try {
-      const sections  = await Section.find({});
-      return sections;
+	static async getSections() {
+		try {
+			const sections = await Section.find({});
+			return sections;
+		} catch (error) {
+			const statusCode = error.statusCode || 500;
+			throw new HttpError(statusCode, error.message || "An error occurred.");
+		}
+	}
+	
+	static async createQuestion(question, sectionId) {
+		try {
+			const section = await Section.findOne({ sectionId });
+			if (!section) throw new Error("User not found");
 
-    } catch (error) {
-      const statusCode = error.statusCode || 500;
-      throw new HttpError(statusCode, error.message || "An error occurred.");
+			section.questions.push(question);
 
-    }
-  }
+			await section.save();
+		} catch (error) {
+			const statusCode = error.statusCode || 500;
+			throw new HttpError(statusCode, error.message || "An error occurred.");
+		}
+	}
 
-  static async getQuestion(id) {
-    try {
-      const question = await User.findOne({  }, { _id: 0 });
-      if (!user) throw new Error("User not found");
+	static async deleteQuestion(sectionId, questionId) {
+		try {
+			await Section.updateOne({ sectionId: sectionId }, { $pull: { questions: { questionId: questionId } } });
+		} catch (error) {
+			const statusCode = error.statusCode || 500;
+			throw new HttpError(statusCode, error.message || "An error occurred.");
+		}
+	}
 
-      await User.updateOne({ username }, { $set: { settings } });
-    } catch (error) {
-      const statusCode = error.statusCode || 500;
-      throw new HttpError(statusCode, error.message || "An error occurred.");
+	static async createSection(section) {
+		try {
+			await Section.create(section);
+		} catch (error) {
+			const statusCode = error.statusCode || 500;
+			throw new HttpError(statusCode, error.message || "An error occurred.");
+		}
+	}
 
-    }
-  }
-  static async createQuestion(question) {
-  	try {
-  	  const user = await User.findOne({ username }, { _id: 0 });
-      if (!user) throw new Error("User not found");
-
-      await User.updateOne({ username }, { $set: { tutorialCompleted: true } });
-  		
-  	} catch(error) {
-      const statusCode = error.statusCode || 500;
-      throw new HttpError(statusCode, error.message || "An error occurred.");
-      
-    }
-  }
-
-  static async updateQuestion(question) {
-  	try {
-  	  const user = await User.findOne({ username }, { _id: 0 });
-      if (!user) throw new Error("User not found");
-
-      await User.updateOne({ username }, { $set: { tutorialCompleted: true } });
-  		
-  	} catch(error) {
-      const statusCode = error.statusCode || 500;
-      throw new HttpError(statusCode, error.message || "An error occurred.");
-      
-    }
-  }
-
-  static async deleteQuestion(id) {
-  	try {
-  	  const user = await User.findOne({ username }, { _id: 0 });
-      if (!user) throw new Error("User not found");
-
-      await User.updateOne({ username }, { $set: { tutorialCompleted: true } });
-  		
-  	} catch(error) {
-      const statusCode = error.statusCode || 500;
-      throw new HttpError(statusCode, error.message || "An error occurred.");
-      
-    }
-  }
-
-  static async createSection(section) {
-  	try {
-  	  const user = await User.findOne({ username }, { _id: 0 });
-      if (!user) throw new Error("User not found");
-
-      await User.updateOne({ username }, { $set: { tutorialCompleted: true } });
-  		
-  	} catch(error) {
-      const statusCode = error.statusCode || 500;
-      throw new HttpError(statusCode, error.message || "An error occurred.");
-      
-    }
-  }
-
-  static async deleteSection(id) {
-  	try {
-  	  const user = await User.findOne({ username }, { _id: 0 });
-      if (!user) throw new Error("User not found");
-
-      await User.updateOne({ username }, { $set: { tutorialCompleted: true } });
-  		
-  	} catch(error) {
-      const statusCode = error.statusCode || 500;
-      throw new HttpError(statusCode, error.message || "An error occurred.");
-      
-    }
-  }
+	static async deleteSection(id) {
+		try {
+			await Section.deleteOne({ sectionId: id });
+		} catch (error) {
+			const statusCode = error.statusCode || 500;
+			throw new HttpError(statusCode, error.message || "An error occurred.");
+		}
+	}
 }
 
 module.exports = QuestionnareRepository;
