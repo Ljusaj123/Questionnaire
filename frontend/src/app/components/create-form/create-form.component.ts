@@ -59,16 +59,8 @@ export class CreateForm {
     this.sectionIds = this.questionnaireService.getAllSectionIds();
   }
 
-  getAvailableConditionOptions(index: number): string[] {
-    const usedOptions = this.conditions.controls
-      .map((condition, i) =>
-        i !== index ? condition.get('option')?.value : null,
-      )
-      .filter(Boolean);
-
-    return this.options.controls
-      .map((option) => option.get('label')?.value)
-      .filter((label) => !usedOptions.includes(label));
+  getAvailableConditionOptions(): string[] {
+    return this.options.controls.map((option) => option.get('label')?.value);
   }
 
   hasOptions(type: QuestionType): boolean {
@@ -82,6 +74,12 @@ export class CreateForm {
       this.questionIds = this.questionnaireService.getQuestionIdsBySection(
         this.sectionId,
       );
+    }
+  }
+
+  removeOption(index: number): void {
+    if (this.options.length > 1) {
+      this.options.removeAt(index);
     }
   }
 
@@ -111,11 +109,11 @@ export class CreateForm {
     this.conditions.removeAt(index);
   }
 
-  isLast(index: number): boolean {
-    return index === this.conditions.length - 1;
-  }
-
   handleCreateQestion() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     const newQuestion = {
       questionId: this.questionId,
       label: this.form.get('title')?.value,
@@ -158,14 +156,33 @@ export class CreateForm {
   }
 
   private createCondition(): FormGroup {
-    return new FormGroup({
-      answerId: new FormControl<string>('', Validators.required),
-      type: new FormControl<'section' | 'question' | null>(
-        null,
-        Validators.required,
-      ),
-      target: new FormControl<string>('', Validators.required),
+    const group = new FormGroup({
+      answerId: new FormControl<string>(''),
+      type: new FormControl<'section' | 'question' | null>(null),
+      target: new FormControl<string>(''),
     });
+
+    const answerIdCtrl = group.get('answerId')!;
+    const typeCtrl = group.get('type')!;
+    const targetCtrl = group.get('target')!;
+
+    answerIdCtrl.valueChanges.subscribe((value) => {
+      if (value) {
+        typeCtrl.setValidators(Validators.required);
+        targetCtrl.setValidators(Validators.required);
+      } else {
+        typeCtrl.clearValidators();
+        targetCtrl.clearValidators();
+
+        typeCtrl.reset();
+        targetCtrl.reset();
+      }
+
+      typeCtrl.updateValueAndValidity({ emitEvent: false });
+      targetCtrl.updateValueAndValidity({ emitEvent: false });
+    });
+
+    return group;
   }
 
   private createOption(label: string = ''): FormGroup {
@@ -190,7 +207,8 @@ export class CreateForm {
         pointsCtrl.clearValidators();
         pointsCtrl.disable();
       }
-      pointsCtrl.updateValueAndValidity({ emitEvent: false });
+
+      pointsCtrl.updateValueAndValidity();
     });
 
     return group;

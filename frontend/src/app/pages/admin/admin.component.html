@@ -94,3 +94,15 @@
     </div>
   </div>
 </p-dialog>
+
+<p-dialog
+  header="Error"
+  [(visible)]="showErrorDialog"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  (onHide)="showErrorDialog= false"
+>
+  <div >
+    <p class="text-center">Sections {{sectionsWithoutQuestions}} doesn't have defined questions.</p>
+  </div>
+</p-dialog>

@@ -24,10 +24,10 @@ export interface Condition {
   target: string;
 }
 
-export type ConditionTargetType = 'section' | 'question' | null;
+export type ConditionTargetType = 'Section' | 'Question' | null;
 
 export interface CreateAction {
-  type: 'section' | 'question';
+  type: 'Section' | 'Question';
   questionType: QuestionType;
 }
 

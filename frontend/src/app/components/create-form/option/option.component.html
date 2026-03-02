@@ -66,5 +66,16 @@
     placeholder="Points"
     formControlName="points"
     [inputStyle]="{ width: '100px' }"
+    [ngClass]="{'ng-invalid ng-dirty': formGroup.get('points')?.invalid && formGroup.get('points')?.touched,}"
   />
+  @if (canRemove) {
+    <p-button
+      icon="pi pi-trash"
+      severity="danger"
+      [text]="true"
+      [rounded]="true"
+      (click)="remove.emit()"
+      title="Remove option"
+    />
+  }
 </div>

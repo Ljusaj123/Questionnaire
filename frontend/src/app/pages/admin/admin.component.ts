@@ -32,7 +32,7 @@ import { InputTextModule } from 'primeng/inputtext';
     ConfirmDialog,
     DialogModule,
     FormsModule,
-    InputTextModule
+    InputTextModule,
   ],
   providers: [ConfirmationService],
   templateUrl: './admin.component.html',
@@ -46,8 +46,10 @@ export class Admin implements OnInit {
   public newQuestionId: string | null = null;
 
   public questionType: QuestionType = '';
-  public newSectionLabel: string = "";
+  public newSectionLabel: string = '';
   public showCreateSectionDialog: boolean = false;
+  public showErrorDialog: boolean = false;
+  public sectionsWithoutQuestions: string[] = [];
 
   constructor(
     private questionnaireService: QuestionnaireService,
@@ -62,7 +64,18 @@ export class Admin implements OnInit {
   }
 
   startQuestionnaire() {
-    this.questionnaireService.removeEditingMode();
+    this.sectionsWithoutQuestions = this.questionnaireData
+      .filter((section: Section) => {
+        return section.questions.length === 0;
+      })
+      .map((section: Section) => {
+        return section.sectionId;
+      });
+    if (this.sectionsWithoutQuestions.length) {
+      this.showErrorDialog = true;
+      return;
+    }
+
     this.router.navigateByUrl(`/questionnaire`);
   }
 
@@ -73,14 +86,14 @@ export class Admin implements OnInit {
   }
 
   handleContextMenuAction(action: CreateAction, sectionId: string) {
-    if (action.type === 'section') {
+    if (action.type === 'Section') {
       this.newSectionLabel = '';
       this.showCreateSectionDialog = true;
       return;
     }
     this.questionType = action.questionType;
 
-    if (action.type === 'question') {
+    if (action.type === 'Question') {
       this.newQuestionId =
         this.questionnaireService.getNextQuestionId(sectionId);
 

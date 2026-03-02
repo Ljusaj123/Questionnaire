@@ -102,14 +102,6 @@ export class QuestionnaireService {
     return nextQuestionId;
   }
 
-  removeEditingMode(): void {
-    this.sections.forEach((section: Section) => {
-      section.questions.forEach((question: Question) => {
-        delete question.isEditing;
-      });
-    });
-  }
-
   setActiveQuestion(sectionId: string, questionId: string): void {
     const section = this.sections.find(
       (section: Section) => section.sectionId === sectionId,

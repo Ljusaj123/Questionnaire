@@ -1,44 +1,122 @@
-
 <form [formGroup]="form" class="p-3 mt-3 bg-gray-100">
   <div>
     <div class="flex align-items-center gap-2 py-2">
-        <span class="font-semibold white-space-nowrap">{{ questionId }}</span>
-        <input pInputText placeholder="Question" formControlName="title" class="w-full" />
+      <span class="font-semibold white-space-nowrap">{{ questionId }}</span>
+      <input
+        pInputText
+        placeholder="Question"
+        formControlName="title"
+        class="w-full"
+        [ngClass]="{
+          'ng-invalid ng-dirty':
+            form.get('title')?.invalid && form.get('title')?.touched,
+        }"
+      />
     </div>
+    @if (form.get("title")?.invalid && form.get("title")?.touched) {
+      <p class="text-red-500 text-sm m-1 ml-6">Question title is required</p>
+    }
     <div formArrayName="options" class="py-2 pl-6">
-
       @for (option of options.controls; let i = $index; track i) {
-      <app-option [type]="type" [formGroup]="option"></app-option>
-      } 
+        <app-option
+          [type]="type"
+          [formGroup]="option"
+          (remove)="removeOption(i)"
+          [canRemove]="hasOptions(type) && options.length > 1"
+        ></app-option>
+
+        @if (option.get("points")?.invalid && option.get("points")?.touched) {
+          <p class="text-red-500 text-sm m-1">
+            Points are required when Red flag is checked
+          </p>
+        }
+      }
+
       @if (hasOptions(type)) {
-        <p-button label="Add option" icon="pi pi-plus" styleClass="mt-3 text-sm" (click)="addOption()" variant="text"></p-button>
+        <p-button
+          label="Add option"
+          icon="pi pi-plus"
+          styleClass="mt-3 text-sm"
+          (click)="addOption()"
+          variant="text"
+        ></p-button>
       }
     </div>
   </div>
   @if (hasOptions(type)) {
-  <div class="py-3 flex flex-column">
-    <span class="font-bold mb-2">Conditional logic</span>
+    <div class="py-3 flex flex-column">
+      <span class="font-bold mb-2">Conditional logic</span>
 
-    <div formArrayName="conditions" class="pl-6">
-      <div
-        class="flex flex-wrap align-items-center gap-2"
-        *ngFor="let group of conditions.controls; let i = index"
-        [formGroupName]="i"
-      >
-        <span>If</span>
-        <p-select formControlName="answerId" placeholder="Select option" [options]="getAvailableConditionOptions(i)"/>
-        <span>then open</span>
-        <p-select formControlName="type" placeholder="Select" (onChange)="handleSelection(i)" [options]="['Section', 'Question']"/>
-        <p-select formControlName="target" placeholder="Select" [options]="getTargetsForCondition(i)"/>
-        <p-button icon="pi pi-trash" [rounded]="true" [text]="true" (click)="removeCondition(i)" title="Remove condition" severity="danger"/>
-        
+      <div formArrayName="conditions" class="pl-6">
+        <div
+          class="flex flex-column"
+          *ngFor="let condition of conditions.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <div class="flex flex-wrap align-items-center gap-2">
+            <span>If</span>
+            <p-select
+              [showClear]="true"
+              formControlName="answerId"
+              placeholder="Select option"
+              [options]="getAvailableConditionOptions()"
+            />
+            <span>then open</span>
+            <p-select
+              formControlName="type"
+              placeholder="Select"
+              (onChange)="handleSelection(i)"
+              [options]="['Section', 'Question']"
+                [ngClass]="{
+                'ng-invalid ng-dirty':
+                  condition.get('answerId')?.value &&
+                  condition.get('type')?.invalid &&
+                  condition.get('type')?.touched,
+              }"
+            />
+            <p-select
+              formControlName="target"
+              placeholder="Select"
+              [options]="getTargetsForCondition(i)"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  condition.get('answerId')?.value &&
+                  condition.get('target')?.invalid &&
+                  condition.get('target')?.touched,
+              }"
+            />
+            <p-button
+              icon="pi pi-trash"
+              [rounded]="true"
+              [text]="true"
+              (click)="removeCondition(i)"
+              title="Remove condition"
+              severity="danger"
+            />
+          </div>
+          @if (
+            condition.get("answerId")?.value &&
+            (condition.get("type")?.invalid ||
+              condition.get("target")?.invalid) &&
+            (condition.get("type")?.touched || condition.get("taget")?.touched)
+          ) {
+            <p class="text-red-500 text-sm m-1">Type and target are required</p>
+          }
+        </div>
+        <p-button
+          label="Add condition"
+          icon="pi pi-plus"
+          styleClass="mt-3 text-sm"
+          [text]="true"
+          (click)="addCondition()"
+        />
       </div>
-      <p-button label="Add condition" icon="pi pi-plus" styleClass="mt-3 text-sm" [text]="true" (click)="addCondition()"/>
     </div>
-  </div>
   }
   <div class="flex justify-content-end gap-2 align-items-center">
-    <p-button (onClick)="this.onCancel.emit();" severity="secondary">Cancel</p-button>
+    <p-button (onClick)="this.onCancel.emit()" severity="secondary"
+      >Cancel</p-button
+    >
     <p-button (onClick)="handleCreateQestion()">Create</p-button>
   </div>
 </form>

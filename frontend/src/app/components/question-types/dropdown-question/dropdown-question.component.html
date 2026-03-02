@@ -2,6 +2,8 @@
   placeholder="Select an option"
   [options]="answers"
   [(ngModel)]="currentAnswer"
+  optionLabel="label"
+  optionValue="label"
   (onChange)="this.selected.emit(this.currentAnswer)"
   appendTo="body"
 >

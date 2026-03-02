@@ -40,7 +40,7 @@ export class Questionnaire {
     return this.answersState.get(this.getKey());
   }
 
-  onAnswerChange(value: string | string[]) {
+  onAnswerChange(value: any) {
     const key = this.getKey();
     this.answersState.set(key, value);
   }
@@ -77,11 +77,16 @@ export class Questionnaire {
       return;
     }
 
+    console.log(conditions)
+    console.log(answer)
+
     const matchedConditions = conditions.filter((condition: Condition) =>
       Array.isArray(answer)
         ? answer.includes(condition.answerId)
         : condition.answerId === answer,
     );
+
+    console.log(matchedConditions)
 
     if (matchedConditions.length === 1) {
       this.navigateByCondition(matchedConditions[0]);
@@ -112,10 +117,13 @@ export class Questionnaire {
   }
 
   navigateByCondition(condition: Condition) {
-    if (condition.type === 'section') {
+    console.log(condition)
+    if (condition.type === 'Section') {
       const sectionIndex = this.questionnaireData.findIndex(
         (section) => section.sectionId === condition.target,
       );
+
+      console.log(sectionIndex)
 
       if (sectionIndex != -1) {
         this.currentSectionIndex = sectionIndex;
@@ -123,7 +131,7 @@ export class Questionnaire {
       }
     }
 
-    if (condition.type === 'question') {
+    if (condition.type === 'Question') {
       const currentSection = this.questionnaireService.getCurrentSection(
         this.currentSectionIndex,
       );
