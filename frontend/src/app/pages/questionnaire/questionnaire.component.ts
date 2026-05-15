@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Condition, Question, Section } from '@core/models';
 
 import { QuestionItem } from 'src/app/components/question-item/question-item.component';
@@ -9,7 +9,7 @@ import { QuestionnaireService } from '@core/questionnaire.service';
 
 @Component({
   selector: 'app-questionnaire',
-  imports: [CommonModule, ButtonModule, QuestionItem],
+  imports: [ButtonModule, QuestionItem],
   templateUrl: './questionnaire.component.html',
 })
 export class Questionnaire {

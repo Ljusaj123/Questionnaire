@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AnswerOption } from '@core/models';
@@ -7,7 +7,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 
 @Component({
   selector: 'app-radio-question',
-  imports: [RadioButtonModule, CommonModule, FormsModule],
+  imports: [RadioButtonModule, FormsModule],
   templateUrl: './radio-question.component.html',
 })
 export class RadioQuestion {

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 import { CreateAction, QuestionType, Section } from '@core/models';
 import { QuestionnaireService } from '@core/questionnaire.service';
@@ -21,7 +21,6 @@ import { InputTextModule } from 'primeng/inputtext';
 @Component({
   selector: 'app-admin-page',
   imports: [
-    CommonModule,
     ButtonModule,
     CdkAccordionModule,
     ContextMenu,
@@ -32,8 +31,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ConfirmDialog,
     DialogModule,
     FormsModule,
-    InputTextModule,
-  ],
+    InputTextModule
+],
   providers: [ConfirmationService],
   templateUrl: './admin.component.html',
 })

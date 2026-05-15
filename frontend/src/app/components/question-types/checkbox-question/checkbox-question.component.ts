@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AnswerOption } from '@core/models';
@@ -6,7 +6,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-checkbox-question',
-  imports: [CheckboxModule, CommonModule, FormsModule],
+  imports: [CheckboxModule, FormsModule],
   templateUrl: './checkbox-question.component.html',
   standalone: true,
 })
