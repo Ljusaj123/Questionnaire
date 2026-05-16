@@ -1,16 +1,16 @@
 <div class="flex flex-col px-1 gap-4">
-  @for (answer of answers; track $index) {
+  @for (answer of answers(); track $index) {
     <div>
       <p-radiobutton
         name="radioGroup"
         [value]="answer.label"
         [inputId]="answer.label"
-        [(ngModel)]="currentAnswer"
-        (change)="this.selected.emit(this.currentAnswer)"
+        [(ngModel)]="selectedAnswer"
+        (ngModelChange)="setAnswerValues($event)"
       />
       <label [for]="answer.label" class="ml-2">{{ answer.label }}</label>
 
-      @if (answer.isFlag && isAdmin) {
+      @if (answer.isFlag && isAdmin()) {
         <span class="bg-gray-200 ml-2 text-sm p-1 text-black/90"
           >{{ answer.points }}pt</span
         >

@@ -19,7 +19,7 @@
 
     <p-accordion (onOpen)="setActiveSection($event)" (onClose)="activeSectionId = null">
       @for (
-        section of questionnaireData;
+        section of questionnaireData();
         track section.sectionId;
         let index = $index
       ) {

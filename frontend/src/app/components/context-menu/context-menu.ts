@@ -2,9 +2,8 @@ import {
   Component,
   ViewChild,
   TemplateRef,
-  Output,
-  EventEmitter,
-  Input,
+  input,
+  output,
 } from '@angular/core';
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { CreateAction, QuestionType } from '@core/models';
@@ -21,9 +20,9 @@ import { CommonModule } from '@angular/common';
 export class ContextMenu {
   @ViewChild('contextMenu', { static: true })
   public contextMenu!: TemplateRef<CdkMenuModule>;
-  @Input() showQuestionOption: boolean = false;
+  public showQuestionOption = input<boolean>(false);
 
-  @Output() action = new EventEmitter<CreateAction>();
+  public action = output<CreateAction>();
 
   createSection() {
     this.action.emit({ type: 'Section', questionType: '' });

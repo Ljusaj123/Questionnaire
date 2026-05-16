@@ -3,13 +3,13 @@
     pInputText
     placeholder="Your answer"
     type="text"
-    [(ngModel)]="currentAnswer"
-    (ngModelChange)="this.answered.emit(this.currentAnswer);"
+    [(ngModel)]="selectedAnswer"
+    (ngModelChange)="setAnswerValues($event)"
   />
 
-  @if (answers[0].isFlag && isAdmin) {
+  @if (answers()[0].isFlag && isAdmin()) {
     <span class="bg-gray-200 ml-2 text-sm p-1 text-black/90"
-      >{{ answers[0].points }}pt</span
+      >{{ answers()[0].points }}pt</span
     >
   }
 </div>

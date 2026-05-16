@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { AnswerOption } from '@core/models';
 
 import {
@@ -12,18 +12,25 @@ import {
   imports: [FileUploadModule],
 })
 export class DocumentQuestion {
-  @Input() answers: AnswerOption[] = [];
-  @Input() isAdmin: boolean = true;
-  @Input() currentAnswer: File | null = null;
+  public answers = input<AnswerOption[]>([]);
+  public isAdmin = input<boolean>(true);
+  public currentAnswer = input<File | null>(null);
+  public localAnswer = signal<File | null>(null);
 
-  @Output() answered = new EventEmitter<File>();
+  public answered = output<File>();
+
+  constructor() {
+    effect(() => {
+      this.localAnswer.set(this.currentAnswer());
+    });
+  }
 
   onFileSelect(event: FileSelectEvent) {
     if (!event.files?.length) return;
 
     const file = event.files[0];
 
-    this.currentAnswer = file;
+    this.localAnswer.set(file);
     this.answered.emit(file);
   }
 }

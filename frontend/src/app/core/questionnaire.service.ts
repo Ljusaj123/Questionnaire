@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Question, Section } from '@core/models';
-import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { RestResponse } from './rest-response.model';
 
@@ -9,13 +8,14 @@ import { RestResponse } from './rest-response.model';
   providedIn: 'root',
 })
 export class QuestionnaireService {
-  private activeQuestionSubject = new BehaviorSubject<Question | null>(null);
-  public activeQuestion$ = this.activeQuestionSubject.asObservable();
+  private sectionsSignal = signal<Section[]>([]);
+  public sections = this.sectionsSignal.asReadonly();
 
-  private sectionsSubject = new BehaviorSubject<Section[]>([]);
-  readonly sections$ = this.sectionsSubject.asObservable();
+  private activeQuestionSignal = signal<Question | null>(null);
+  public activeQuestion = this.activeQuestionSignal.asReadonly();
 
-  public activeSection: string = '';
+  private activeSectionSignal = signal<string>('');
+  public activeSection = this.activeSectionSignal.asReadonly();
 
   private apiUrl: string;
 
@@ -24,22 +24,18 @@ export class QuestionnaireService {
     this.loadSections();
   }
 
-  private get sections(): Section[] {
-    return this.sectionsSubject.value;
-  }
-
   loadSections() {
     this.http
       .get<RestResponse>(`${this.apiUrl}/sections`)
       .subscribe((response) => {
         if (response.message === 'success') {
-          this.sectionsSubject.next(response.data);
+          this.sectionsSignal.set(response.data);
         }
       });
   }
 
   createSection(sectionLabel: string) {
-    const sections = this.sections;
+    const sections = this.sections();
     const lastId = sections.at(-1)?.sectionId ?? 'S-000';
 
     const section: Section = {
@@ -70,11 +66,11 @@ export class QuestionnaireService {
   }
 
   getAllSectionIds(): string[] {
-    return this.sections.map((section: Section) => section.sectionId);
+    return this.sections().map((section: Section) => section.sectionId);
   }
 
   getQuestionIdsBySection(sectionId: string): string[] {
-    const section = this.sections.find(
+    const section = this.sections().find(
       (section: Section) => section.sectionId === sectionId,
     );
 
@@ -86,7 +82,7 @@ export class QuestionnaireService {
   }
 
   getNextQuestionId(activeSectionId: string) {
-    const section = this.sections.find(
+    const section = this.sections().find(
       (section: Section) => section.sectionId === activeSectionId,
     );
     if (!section) return null;
@@ -103,10 +99,10 @@ export class QuestionnaireService {
   }
 
   setActiveQuestion(sectionId: string, questionId: string): void {
-    const section = this.sections.find(
+    const section = this.sections().find(
       (section: Section) => section.sectionId === sectionId,
     );
-    this.activeSection = sectionId;
+    this.activeSectionSignal.set(sectionId);
     if (!section) return;
 
     const question = section.questions.find(
@@ -114,11 +110,11 @@ export class QuestionnaireService {
     );
     if (!question) return;
 
-    this.activeQuestionSubject.next(question);
+    this.activeQuestionSignal.set(question);
   }
 
   updateActiveQuestion(patch: Partial<Question>): void {
-    const current = this.activeQuestionSubject.value;
+    const current = this.activeQuestionSignal();
     if (!current) return;
 
     const updated = { ...current, ...patch };
@@ -130,29 +126,39 @@ export class QuestionnaireService {
     currentQuestionIndex: number,
   ) {
     return (
-      this.sections[currentSectionIndex]?.questions[currentQuestionIndex] ??
+      this.sections()[currentSectionIndex]?.questions[currentQuestionIndex] ??
       null
     );
   }
 
   getCurrentSection(currentSectionIndex: number) {
-    return this.sections[currentSectionIndex];
+    return this.sections()[currentSectionIndex];
   }
 
   private syncToStore(updated: Question): void {
-    const section = this.sections.find(
-      (section: Section) => section.sectionId === this.activeSection,
-    );
-    if (!section) return;
+    this.sectionsSignal.update((sections) => {
+      const sectionIndex = sections.findIndex(
+        (section: Section) => section.sectionId === this.activeSection(),
+      );
+      if (sectionIndex === -1) return sections;
 
-    const index = section.questions.findIndex(
-      (question: Question) => question.questionId === updated.questionId,
-    );
+      const section = sections[sectionIndex];
+      const questionIndex = section.questions.findIndex(
+        (question: Question) => question.questionId === updated.questionId,
+      );
+      if (questionIndex === -1) return sections;
 
-    if (index !== -1) {
-      section.questions[index] = updated;
-      return;
-    }
+      const updatedSection: Section = {
+        ...section,
+        questions: section.questions.map((question) =>
+          question.questionId === updated.questionId ? updated : question,
+        ),
+      };
+
+      return sections.map((currentSection, index) =>
+        index === sectionIndex ? updatedSection : currentSection,
+      );
+    });
   }
 
   private nextId(lastId: string): string {

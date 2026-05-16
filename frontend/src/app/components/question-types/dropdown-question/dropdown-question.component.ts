@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AnswerOption } from '@core/models';
 import { SelectModule } from 'primeng/select';
@@ -9,9 +9,21 @@ import { SelectModule } from 'primeng/select';
   templateUrl: './dropdown-question.component.html',
 })
 export class DropdownQuestion {
-  @Input() answers: AnswerOption[] = [];
-  @Input() isAdmin: boolean = true;
-  @Input() currentAnswer: string = '';
+  public answers = input<AnswerOption[]>([]);
+  public isAdmin = input<boolean>(true);
+  public currentAnswer = input<string>('');
 
-  @Output() selected = new EventEmitter<string>();
+  public selectedAnswer = signal<string>('');
+  public answered = output<string>();
+
+  constructor() {
+    effect(() => {
+      this.selectedAnswer.set(this.currentAnswer());
+    });
+  }
+
+  setAnswerValues(value: string) {
+    this.selectedAnswer.set(value);
+    this.answered.emit(value);
+  }
 }

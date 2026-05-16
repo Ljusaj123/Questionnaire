@@ -1,5 +1,4 @@
-
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AnswerOption } from '@core/models';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -11,9 +10,23 @@ import { CheckboxModule } from 'primeng/checkbox';
   standalone: true,
 })
 export class CheckboxQuestion {
-  @Input() answers: AnswerOption[] = [];
-  @Input() isAdmin: boolean = true;
-  @Input() currentAnswer: string[] = [];
+  public answers = input<AnswerOption[]>([]);
+  public isAdmin = input<boolean>(true);
+  public currentAnswer = input<string[]>([]);
 
-  @Output() selected = new EventEmitter<string[]>();
+  // local mutable state za ngModel
+  public selectedAnswers = signal<string[]>([]);
+
+  public answered = output<string[]>();
+
+  constructor() {
+    effect(() => {
+      this.selectedAnswers.set(this.currentAnswer());
+    });
+  }
+
+  setAnswerValues(values: string[]) {
+    this.selectedAnswers.set(values);
+    this.answered.emit(values);
+  }
 }

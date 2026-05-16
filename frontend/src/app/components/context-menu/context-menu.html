@@ -36,7 +36,7 @@
       cdkMenuItem
       class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100"
       (click)="createQuestion('short-text')"
-      [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
+      [ngClass]="showQuestionOption() ? '': 'pointer-events-none opacity-40'"
     >
       <i class="pi pi-align-left"></i>
       <span> Short text </span>
@@ -45,7 +45,7 @@
       cdkMenuItem
       class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100 border-b border-surface"
       (click)="createQuestion('long-text')"
-      [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
+      [ngClass]="showQuestionOption() ? '': 'pointer-events-none opacity-40'"
     >
       <i class="pi pi-align-justify"></i>
       <span> Long text </span>
@@ -54,7 +54,7 @@
       cdkMenuItem
       class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100"
       (click)="createQuestion('radio')"
-      [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
+      [ngClass]="showQuestionOption() ? '': 'pointer-events-none opacity-40'"
     >
       <i class="pi pi-circle"></i>
       <span> Radio </span>
@@ -63,7 +63,7 @@
       cdkMenuItem
       class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100"
       (click)="createQuestion('check-boxes')"
-      [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
+      [ngClass]="showQuestionOption() ? '': 'pointer-events-none opacity-40'"
     >
       <i class="pi pi-stop"></i>
       <span> Check-boxes </span>
@@ -72,7 +72,7 @@
       cdkMenuItem
       class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100 border-b border-surface"
       (click)="createQuestion('drop-down')"
-      [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
+      [ngClass]="showQuestionOption() ? '': 'pointer-events-none opacity-40'"
     >
       <i class="pi pi-angle-down"></i>
       <span> Drop-down </span>
@@ -81,7 +81,7 @@
       cdkMenuItem
       class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100"
       (click)="createQuestion('date')"
-      [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
+      [ngClass]="showQuestionOption() ? '': 'pointer-events-none opacity-40'"
     >
       <i class="pi pi-calendar-plus"></i>
       <span> Date </span>
@@ -90,7 +90,7 @@
       cdkMenuItem
       class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100"
       (click)="createQuestion('document')"
-      [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
+      [ngClass]="showQuestionOption() ? '': 'pointer-events-none opacity-40'"
     >
       <i class="pi pi-file-arrow-up"></i>
       <span> Document </span>

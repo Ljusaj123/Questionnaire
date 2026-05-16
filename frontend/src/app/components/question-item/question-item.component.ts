@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CheckboxQuestion } from '../question-types/checkbox-question/checkbox-question.component';
 import { RadioQuestion } from '../question-types/radio-question/radio-question.component';
@@ -32,12 +32,12 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   templateUrl: './question-item.component.html',
 })
 export class QuestionItem {
-  @Input() question!: Question;
-  @Input() sectionId: string = '';
+  public question = input.required<Question>();
+  public sectionId = input<string>('');
+  public isAdmin = input<boolean>(true);
+  public answer = input<any>();
 
-  @Output() selected = new EventEmitter<any>();
-  @Input() isAdmin: boolean = true;
-  @Input() answer: any
+  public answered = output<any>();
 
   constructor(
     private questionnaireService: QuestionnaireService,
@@ -46,7 +46,7 @@ export class QuestionItem {
   ) {}
 
   onAnswerChange(value: any) {
-    this.selected.emit(value);
+    this.answered.emit(value);
   }
 
   handleDeleteQuestion(questionId: string) {
@@ -73,7 +73,7 @@ export class QuestionItem {
 
   deleteQuestion(questionId: string) {
     this.questionnaireService
-      .deleteQuestion(questionId, this.sectionId)
+      .deleteQuestion(questionId, this.sectionId())
       .subscribe({
         next: (response: RestResponse) => {
           if (response.message === 'success') {

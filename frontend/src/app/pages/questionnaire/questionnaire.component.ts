@@ -18,15 +18,11 @@ export class Questionnaire {
   public history: { section: number; question: number }[] = [];
   public answersState = new Map<string, string | string[]>();
 
-  public questionnaireData: Section[] = [];
+  public questionnaireData!: () => Section[];
   public showError: boolean = false;
 
-  constructor(private questionnaireService: QuestionnaireService) {}
-
-  ngOnInit(): void {
-    this.questionnaireService.sections$.subscribe((sections) => {
-      this.questionnaireData = sections;
-    });
+  constructor(private questionnaireService: QuestionnaireService) {
+    this.questionnaireData = this.questionnaireService.sections;
   }
 
   get currentQuestion() {
@@ -46,7 +42,7 @@ export class Questionnaire {
   }
 
   private getKey(): string {
-    const section = this.questionnaireData[this.currentSectionIndex];
+    const section = this.questionnaireData()[this.currentSectionIndex];
     return `${section.sectionId}_${this.currentQuestion.questionId}`;
   }
 
@@ -77,16 +73,11 @@ export class Questionnaire {
       return;
     }
 
-    console.log(conditions)
-    console.log(answer)
-
     const matchedConditions = conditions.filter((condition: Condition) =>
       Array.isArray(answer)
         ? answer.includes(condition.answerId)
         : condition.answerId === answer,
     );
-
-    console.log(matchedConditions)
 
     if (matchedConditions.length === 1) {
       this.navigateByCondition(matchedConditions[0]);
@@ -102,7 +93,7 @@ export class Questionnaire {
 
     if (this.currentQuestionIndex < currentSection.questions.length - 1) {
       this.currentQuestionIndex++;
-    } else if (this.currentSectionIndex < this.questionnaireData.length - 1) {
+    } else if (this.currentSectionIndex < this.questionnaireData().length - 1) {
       this.currentSectionIndex++;
       this.currentQuestionIndex = 0;
     }
@@ -117,13 +108,10 @@ export class Questionnaire {
   }
 
   navigateByCondition(condition: Condition) {
-    console.log(condition)
     if (condition.type === 'Section') {
-      const sectionIndex = this.questionnaireData.findIndex(
+      const sectionIndex = this.questionnaireData().findIndex(
         (section) => section.sectionId === condition.target,
       );
-
-      console.log(sectionIndex)
 
       if (sectionIndex != -1) {
         this.currentSectionIndex = sectionIndex;

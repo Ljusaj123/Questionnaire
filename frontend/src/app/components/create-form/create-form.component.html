@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="p-4 mt-4 bg-gray-100">
   <div>
     <div class="flex items-center gap-2 py-2">
-      <span class="font-semibold whitespace-nowrap">{{ questionId }}</span>
+      <span class="font-semibold whitespace-nowrap">{{ questionId() }}</span>
       <input
         pInputText
         placeholder="Question"
@@ -19,10 +19,10 @@
       <div formArrayName="options" class="py-2 pl-12">
         @for (option of options.controls; let i = $index; track i) {
           <app-option
-            [type]="type"
+            [type]="type()"
             [formGroup]="option"
             (remove)="removeOption(i)"
-            [canRemove]="hasOptions(type) && options.length > 1"
+            [canRemove]="hasOptions(type()) && options.length > 1"
           ></app-option>
 
           @if (option.get("points")?.invalid && option.get("points")?.touched) {
@@ -32,7 +32,7 @@
           }
         }
 
-        @if (hasOptions(type)) {
+        @if (hasOptions(type())) {
           <p-button
             label="Add option"
             icon="pi pi-plus"
@@ -43,7 +43,7 @@
         }
       </div>
     </div>
-    @if (hasOptions(type)) {
+    @if (hasOptions(type())) {
       <div class="py-4 flex flex-col">
         <span class="font-bold mb-2">Conditional logic</span>
 

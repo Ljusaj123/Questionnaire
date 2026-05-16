@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -30,15 +30,15 @@ import { MessageService } from 'primeng/api';
   templateUrl: './create-form.component.html',
 })
 export class CreateForm {
-  @Input() questionId: string = '';
-  @Input() sectionId: string = '';
-  @Input() type: QuestionType = '';
+  public questionId = input<string>('');
+  public sectionId = input<string>('');
+  public type = input<QuestionType>('');
 
   public conditionOptions: { label: string; value: string }[] = [];
   public questions: { label: string; value: string }[] = [];
 
-  @Output() onCreate = new EventEmitter<void>();
-  @Output() onCancel = new EventEmitter<void>();
+  public onCreate = output<void>();
+  public onCancel = output<void>();
 
   public form: FormGroup = this.initializeForm();
   public sectionIds: string[] = [];
@@ -72,7 +72,7 @@ export class CreateForm {
 
     if (type === 'Question') {
       this.questionIds = this.questionnaireService.getQuestionIdsBySection(
-        this.sectionId,
+        this.sectionId(),
       );
     }
   }
@@ -115,15 +115,15 @@ export class CreateForm {
       return;
     }
     const newQuestion = {
-      questionId: this.questionId,
+      questionId: this.questionId(),
       label: this.form.get('title')?.value,
-      type: this.type,
+      type: this.type(),
       answers: this.form.get('options')?.value,
       conditions: this.form.get('conditions')?.value,
     };
 
     this.questionnaireService
-      .createQuestion(newQuestion, this.sectionId)
+      .createQuestion(newQuestion, this.sectionId())
       .subscribe({
         next: (response: RestResponse) => {
           if (response.message === 'success') {

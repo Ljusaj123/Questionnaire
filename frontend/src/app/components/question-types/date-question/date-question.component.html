@@ -2,15 +2,15 @@
   <p-datepicker
     placeholder="Choose a date"
     [showIcon]="true"
-    [(ngModel)]="currentAnswer"
-    (onSelect)="this.answered.emit(this.currentAnswer)"
+    [(ngModel)]="selectedAnswers"
+    (ngModelChange)="setAnswerValues($event)"
     dateFormat="dd.mm.yy"
     appendTo="body"
   />
 
-  @if (answers[0].isFlag && isAdmin) {
+  @if (answers()[0].isFlag && isAdmin()) {
     <span class="bg-gray-200 ml-2 text-sm p-1 text-black/90"
-      >{{ answers[0].points }}pt</span
+      >{{ answers()[0].points }}pt</span
     >
   }
 </div>

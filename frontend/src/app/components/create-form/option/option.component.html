@@ -1,6 +1,6 @@
-<div class="flex items-center gap-4 mt-2" [formGroup]="formGroup">
-  @if (hasOptions(type)) {
-    @switch (type) {
+<div class="flex items-center gap-4 mt-2" [formGroup]="formGroup()">
+  @if (hasOptions(type())) {
+    @switch (type()) {
       @case ("check-boxes") {
         <i class="pi pi-check-square"></i>
       }
@@ -20,7 +20,7 @@
       class="w-full"
     />
   } @else {
-    @switch (type) {
+    @switch (type()) {
       @case ("short-text") {
         <input pInputText disabled placeholder="User will enter short text" />
       }
@@ -66,9 +66,9 @@
     placeholder="Points"
     formControlName="points"
     [inputStyle]="{ width: '100px' }"
-    [ngClass]="{'ng-invalid ng-dirty': formGroup.get('points')?.invalid && formGroup.get('points')?.touched,}"
+    [ngClass]="{'ng-invalid ng-dirty': formGroup().get('points')?.invalid && formGroup().get('points')?.touched,}"
   />
-  @if (canRemove) {
+  @if (canRemove()) {
     <p-button
       icon="pi pi-trash"
       severity="danger"

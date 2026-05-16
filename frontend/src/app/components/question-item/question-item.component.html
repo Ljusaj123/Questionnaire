@@ -3,85 +3,85 @@
   <div>
     <div
       class="flex items-center gap-4 mb-4"
-      [ngClass]="isAdmin ? '-ml-6' : ''"
+      [ngClass]="isAdmin() ? '-ml-6' : ''"
     >
-      @if (isAdmin) {
+      @if (isAdmin()) {
         <p-button
           icon="pi pi-trash text-sm"
           severity="danger"
           title="Remove question"
           text="true"
-          (onClick)="handleDeleteQuestion(question.questionId)"
+          (onClick)="handleDeleteQuestion(question().questionId)"
         >
         </p-button>
       }
       <span class="font-bold text-black/90">
-        {{ question.questionId }}</span
+        {{ question().questionId }}</span
       >
-      <span> {{ question.label }}</span>
+      <span> {{ question().label }}</span>
     </div>
   </div>
 
-  @switch (question.type) {
+  @switch (question().type) {
     @case ("short-text") {
       <app-short-text-question
-        [answers]="question.answers"
-        [currentAnswer]="answer"
-        [isAdmin]="isAdmin"
+        [answers]="question().answers"
+        [currentAnswer]="answer()"
+        [isAdmin]="isAdmin()"
         (answered)="onAnswerChange($event)"
       >
       </app-short-text-question>
     }
     @case ("long-text") {
       <app-long-text-question
-        [answers]="question.answers"
-        [isAdmin]="isAdmin"
-        [currentAnswer]="answer"
+        [answers]="question().answers"
+        [isAdmin]="isAdmin()"
+        [currentAnswer]="answer()"
         (answered)="onAnswerChange($event)"
       >
       </app-long-text-question>
     }
     @case ("radio") {
       <app-radio-question
-        [answers]="question.answers"
-        [isAdmin]="isAdmin"
-        [currentAnswer]="answer"
-        (selected)="onAnswerChange($event)"
+        [answers]="question().answers"
+        [isAdmin]="isAdmin()"
+        [currentAnswer]="answer()"
+        (answered)="onAnswerChange($event)"
       >
       </app-radio-question>
     }
     @case ("check-boxes") {
       <app-checkbox-question
-        [answers]="question.answers"
-        [isAdmin]="isAdmin"
-        [currentAnswer]="answer"
-        (selected)="onAnswerChange($event)"
+        [answers]="question().answers"
+        [isAdmin]="isAdmin()"
+        [currentAnswer]="answer()"
+        (answered)="onAnswerChange($event)"
       >
       </app-checkbox-question>
     }
     @case ("drop-down") {
       <app-dropdown-question
-        [answers]="question.answers"
-        [isAdmin]="isAdmin"
-        [currentAnswer]="answer"
-        (selected)="onAnswerChange($event)"
+        [answers]="question().answers"
+        [isAdmin]="isAdmin()"
+        [currentAnswer]="answer()"
+        (answered)="onAnswerChange($event)"
       >
       </app-dropdown-question>
     }
     @case ("date") {
       <app-date-question
-        [answers]="question.answers"
-        [isAdmin]="isAdmin"
-        [currentAnswer]="answer"
+        [answers]="question().answers"
+        [isAdmin]="isAdmin()"
+        [currentAnswer]="answer()"
         (answered)="onAnswerChange($event)"
       >
       </app-date-question>
     }
     @case ("document") {
       <app-document-question
-        [answers]="question.answers"
-        [isAdmin]="isAdmin"
-        [currentAnswer]="answer"
+        [answers]="question().answers"
+        [isAdmin]="isAdmin()"
+        [currentAnswer]="answer()"
         (answered)="onAnswerChange($event)"
       >
       </app-document-question>

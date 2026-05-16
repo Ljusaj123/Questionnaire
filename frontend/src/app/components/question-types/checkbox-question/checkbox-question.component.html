@@ -1,14 +1,14 @@
 <div class="flex flex-col px-1 gap-4">
-  @for (answer of answers; track $index) {
+  @for (answer of answers(); track $index) {
     <div class="flex gap-2">
       <p-checkbox
         [value]="answer.label"
-        [(ngModel)]="currentAnswer"
-        (onChange)="selected.emit(currentAnswer)"
+        [(ngModel)]="selectedAnswers"
+        (ngModelChange)="setAnswerValues($event)"
       />
       <label>
         {{ answer.label }}
-        @if (answer.isFlag && isAdmin) {
+        @if (answer.isFlag && isAdmin()) {
           <span class="bg-gray-200 ml-2 text-sm p-1 text-black/90">
             {{ answer.points }}pt
           </span>

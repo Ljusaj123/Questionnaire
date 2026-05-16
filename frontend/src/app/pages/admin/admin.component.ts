@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { CreateAction, QuestionType, Section } from '@core/models';
@@ -36,10 +36,8 @@ import { InputTextModule } from 'primeng/inputtext';
   providers: [ConfirmationService],
   templateUrl: './admin.component.html',
 })
-export class Admin implements OnInit {
+export class Admin {
   private router = inject(Router);
-  public questionnaireData: Section[] = [];
-
   public activeSectionId: string | null = null;
   public showCreateQuestionForm = false;
   public newQuestionId: string | null = null;
@@ -50,20 +48,18 @@ export class Admin implements OnInit {
   public showErrorDialog: boolean = false;
   public sectionsWithoutQuestions: string[] = [];
 
+  public questionnaireData!: () => Section[];
+
   constructor(
     private questionnaireService: QuestionnaireService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-  ) {}
-
-  ngOnInit(): void {
-    this.questionnaireService.sections$.subscribe((sections) => {
-      this.questionnaireData = sections;
-    });
+  ) {
+    this.questionnaireData = this.questionnaireService.sections;
   }
 
   startQuestionnaire() {
-    this.sectionsWithoutQuestions = this.questionnaireData
+    this.sectionsWithoutQuestions = this.questionnaireData()
       .filter((section: Section) => {
         return section.questions.length === 0;
       })
@@ -80,7 +76,7 @@ export class Admin implements OnInit {
 
   setActiveSection(event: AccordionTabOpenEvent) {
     const index = event.index;
-    const section = this.questionnaireData[index];
+    const section = this.questionnaireData()[index];
     this.activeSectionId = section?.sectionId;
   }
 

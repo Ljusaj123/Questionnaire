@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { QuestionType } from '@core/models';
 
@@ -21,25 +21,31 @@ import { CommonModule } from '@angular/common';
     InputNumberModule,
     FileUploadModule,
     ButtonModule,
-    CommonModule
-],
+    CommonModule,
+  ],
   templateUrl: './option.component.html',
 })
 export class Option {
-  @Input() type: QuestionType = '';
-  @Input() formGroup!: FormGroup;
-  @Input() canRemove = false;
+  public type = input<QuestionType>('');
+  public formGroup = input.required<FormGroup>();
+  public canRemove = input<boolean>(false);
 
-  @Output() remove = new EventEmitter<void>();
+  public remove = output<void>();
 
-  ngOnChanges() {
-    if (this.isStaticFlagType()) {
-      this.formGroup.get('isFlag')?.setValue(true);
-    }
+  constructor() {
+    effect(() => {
+      if (this.isStaticFlagType()) {
+        this.formGroup().get('isFlag')?.setValue(true, {
+          emitEvent: false, // za izbjeci infinite loop
+        });
+      }
+    });
   }
 
   private isStaticFlagType(): boolean {
-    return ['short-text', 'long-text', 'date', 'document'].includes(this.type);
+    return ['short-text', 'long-text', 'date', 'document'].includes(
+      this.type(),
+    );
   }
 
   hasOptions(type: QuestionType): boolean {
