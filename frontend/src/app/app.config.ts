@@ -6,6 +6,7 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { definePreset } from '@primeuix/themes';
 import { MessageService } from 'primeng/api';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 const primaryShades = {
   50:  '#e6f0ff',
@@ -32,6 +33,7 @@ export const appConfig: ApplicationConfig = {
     MessageService,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideAnimationsAsync(),
     provideHttpClient(),
     providePrimeNG({
       theme: {

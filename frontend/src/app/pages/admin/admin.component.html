@@ -1,10 +1,10 @@
 <p-confirm-dialog></p-confirm-dialog>
 <div style="min-height: 85vh" [cdkContextMenuTriggerFor]="menu.contextMenu">
-  <p class="text-right mb-1 mt-5" style="font-size: 0.8rem">
+  <p class="text-right mb-1 mt-8" style="font-size: 0.8rem">
     Naslovna-> Analitika i detekcija -> Upitnik
   </p>
   <div>
-    <div class="flex justify-content-end mb-3">
+    <div class="flex justify-end mb-4">
       <p-button (click)="startQuestionnaire()" title="Start questionnaire">
         <i class="pi pi-play"></i>
       </p-button>
@@ -25,21 +25,21 @@
       ) {
         <p-accordion-panel [value]="index">
           <p-accordion-header>
-            <div class="flex align-items-center gap-2 p-2">
+            <div class="flex items-center gap-2 p-2">
               <p-button
                 icon="pi pi-trash"
                 text="true"
                 severity="danger"
                 (onClick)="handleDeleteSection($event, section.sectionId)"
               ></p-button>
-              <span class="bg-primary p-1 text-white">{{
+              <span class="bg-primary text-primary-contrast p-1">{{
                 section.sectionId
               }}</span>
               <span class="font-normal">{{ section.label }}</span>
             </div>
           </p-accordion-header>
           <p-accordion-content>
-            <div class="ml-8 px-2 py-3 flex flex-column gap-5">
+            <div class="ml-20 px-2 py-4 flex flex-col gap-8">
               @for (question of section.questions; track $index) {
                 <app-question-item
                   [question]="question"
@@ -62,6 +62,8 @@
             </div>
           </p-accordion-content>
         </p-accordion-panel>
+
+        
       }
     </p-accordion>
   </div>
@@ -73,14 +75,14 @@
   [modal]="true"
   [style]="{ width: '400px' }"
 >
-  <div class="flex flex-column gap-3">
+  <div class="flex flex-col gap-4">
     <input
       pInputText
       placeholder="Section name"
       [(ngModel)]="newSectionLabel"
     />
 
-    <div class="flex justify-content-end gap-2">
+    <div class="flex justify-end gap-2">
       <p-button
         label="Cancel"
         severity="secondary"

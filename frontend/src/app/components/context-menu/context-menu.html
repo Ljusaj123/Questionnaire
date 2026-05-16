@@ -1,6 +1,6 @@
 <ng-template #contextMenu>
   <div
-    class="flex flex-column bg-white align-items-center border-round gap-3 p-3 shadow-2 text-primary-500"
+    class="flex flex-col bg-white items-center rounded-border gap-4 p-3 shadow text-primary-500"
     cdkMenu
   >
     <i
@@ -23,19 +23,18 @@
 </ng-template>
 
 <ng-template #questionMenu>
-  <div class="bg-white shadow-2 border-round p-2" style="width: 220px" cdkMenu>
+  <div class="bg-white shadow rounded-border p-2" style="width: 220px" cdkMenu>
     <div
       cdkMenuItem
-      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round"
+      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100 border-b border-surface"
       (click)="createSection()"
     >
       <i class="pi pi-objects-column"></i>
       <span> New section </span>
     </div>
-    <p-divider styleClass="my-1" />
     <div
       cdkMenuItem
-      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round"
+      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100"
       (click)="createQuestion('short-text')"
       [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
     >
@@ -44,17 +43,16 @@
     </div>
     <div
       cdkMenuItem
-      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round"
+      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100 border-b border-surface"
       (click)="createQuestion('long-text')"
       [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
     >
       <i class="pi pi-align-justify"></i>
       <span> Long text </span>
     </div>
-    <p-divider styleClass="my-1" />
     <div
       cdkMenuItem
-      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round"
+      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100"
       (click)="createQuestion('radio')"
       [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
     >
@@ -63,7 +61,7 @@
     </div>
     <div
       cdkMenuItem
-      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round"
+      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100"
       (click)="createQuestion('check-boxes')"
       [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
     >
@@ -72,17 +70,16 @@
     </div>
     <div
       cdkMenuItem
-      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round"
+      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100 border-b border-surface"
       (click)="createQuestion('drop-down')"
       [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
     >
       <i class="pi pi-angle-down"></i>
       <span> Drop-down </span>
     </div>
-    <p-divider styleClass="my-1" />
     <div
       cdkMenuItem
-      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round"
+      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100"
       (click)="createQuestion('date')"
       [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
     >
@@ -91,7 +88,7 @@
     </div>
     <div
       cdkMenuItem
-      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 transition-delay-100 border-round"
+      class="flex gap-1 p-1 mb-1 cursor-pointer hover:bg-gray-100 delay-100"
       (click)="createQuestion('document')"
       [ngClass]="showQuestionOption ? '': 'pointer-events-none opacity-40'"
     >

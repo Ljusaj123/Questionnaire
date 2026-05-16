@@ -1,4 +1,4 @@
-<div class="flex align-items-center gap-3 mt-2" [formGroup]="formGroup">
+<div class="flex items-center gap-4 mt-2" [formGroup]="formGroup">
   @if (hasOptions(type)) {
     @switch (type) {
       @case ("check-boxes") {
@@ -41,7 +41,7 @@
         />
       }
       @case ("document") {
-        <div class="flex gap-3 align-items-center">
+        <div class="flex gap-4 items-center">
           <p-fileupload
             mode="basic"
             disabled="true"
@@ -60,7 +60,7 @@
   }
   <div class="flex gap-1">
     <p-checkbox formControlName="isFlag" [binary]="true" inputId="flag" />
-    <label for="flag" class="white-space-nowrap">Red flag</label>
+    <label for="flag" class="whitespace-nowrap">Red flag</label>
   </div>
   <p-inputNumber
     placeholder="Points"

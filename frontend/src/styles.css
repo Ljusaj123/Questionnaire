@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "tailwindcss-primeui";
+@import "primeicons/primeicons.css";
+
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}

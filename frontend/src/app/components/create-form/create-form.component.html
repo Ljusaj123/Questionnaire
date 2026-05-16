@@ -1,7 +1,7 @@
-<form [formGroup]="form" class="p-3 mt-3 bg-gray-100">
+<form [formGroup]="form" class="p-4 mt-4 bg-gray-100">
   <div>
-    <div class="flex align-items-center gap-2 py-2">
-      <span class="font-semibold white-space-nowrap">{{ questionId }}</span>
+    <div class="flex items-center gap-2 py-2">
+      <span class="font-semibold whitespace-nowrap">{{ questionId }}</span>
       <input
         pInputText
         placeholder="Question"
@@ -14,9 +14,9 @@
         />
       </div>
       @if (form.get("title")?.invalid && form.get("title")?.touched) {
-        <p class="text-red-500 text-sm m-1 ml-6">Question title is required</p>
+        <p class="text-red-500 text-sm m-1 ml-12">Question title is required</p>
       }
-      <div formArrayName="options" class="py-2 pl-6">
+      <div formArrayName="options" class="py-2 pl-12">
         @for (option of options.controls; let i = $index; track i) {
           <app-option
             [type]="type"
@@ -36,7 +36,7 @@
           <p-button
             label="Add option"
             icon="pi pi-plus"
-            styleClass="mt-3 text-sm"
+            styleClass="mt-4 text-sm"
             (click)="addOption()"
             variant="text"
           ></p-button>
@@ -44,16 +44,16 @@
       </div>
     </div>
     @if (hasOptions(type)) {
-      <div class="py-3 flex flex-column">
+      <div class="py-4 flex flex-col">
         <span class="font-bold mb-2">Conditional logic</span>
 
-        <div formArrayName="conditions" class="pl-6">
+        <div formArrayName="conditions" class="pl-12">
           @for (condition of conditions.controls; track condition; let i = $index) {
             <div
-              class="flex flex-column"
+              class="flex flex-col"
               [formGroupName]="i"
               >
-              <div class="flex flex-wrap align-items-center gap-2">
+              <div class="flex flex-wrap items-center gap-2">
                 <span>If</span>
                 <p-select
                   [showClear]="true"
@@ -107,14 +107,14 @@
                   <p-button
                     label="Add condition"
                     icon="pi pi-plus"
-                    styleClass="mt-3 text-sm"
+                    styleClass="mt-4 text-sm"
                     [text]="true"
                     (click)="addCondition()"
                     />
                   </div>
                 </div>
               }
-              <div class="flex justify-content-end gap-2 align-items-center">
+              <div class="flex justify-end gap-2 items-center">
                 <p-button (onClick)="this.onCancel.emit()" severity="secondary"
                   >Cancel</p-button
                   >
