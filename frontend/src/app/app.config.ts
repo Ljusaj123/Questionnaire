@@ -22,7 +22,7 @@ const primaryShades = {
   950: '#040f1a',
 };
 
-const ZeloPreset = definePreset(Aura, {
+const Preset = definePreset(Aura, {
   semantic: {
     primary: primaryShades,
   },
@@ -37,7 +37,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     providePrimeNG({
       theme: {
-        preset: ZeloPreset,
+        preset: Preset,
         options: {
           darkModeSelector: '.dark-mode',
         },

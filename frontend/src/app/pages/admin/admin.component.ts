@@ -126,7 +126,7 @@ export class Admin {
   handleDeleteSection(event: any, sectionId: string) {
     event.stopPropagation();
     this.confirmationService.confirm({
-      message: `Are you sure that you want to delete section ${sectionId}?`,
+      message: `Are you sure that you want to delete section <b>${sectionId}</b>?`,
       header: 'Confirmation',
       closable: true,
       closeOnEscape: true,
@@ -138,6 +138,7 @@ export class Admin {
       },
       acceptButtonProps: {
         label: 'Yes',
+        severity: 'danger',
       },
       accept: () => {
         this.deleteSection(sectionId);

@@ -67,23 +67,23 @@
                     placeholder="Select"
                     (onChange)="handleSelection(i)"
                     [options]="['Section', 'Question']"
-                [ngClass]="{
-                'ng-invalid ng-dirty':
-                  condition.get('answerId')?.value &&
-                  condition.get('type')?.invalid &&
-                  condition.get('type')?.touched,
-              }"
+                    [ngClass]="{
+                    'ng-invalid ng-dirty':
+                      condition.get('answerId')?.value &&
+                      condition.get('type')?.invalid &&
+                      condition.get('type')?.touched,
+                  }"
                     />
                     <p-select
                       formControlName="target"
                       placeholder="Select"
                       [options]="getTargetsForCondition(i)"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  condition.get('answerId')?.value &&
-                  condition.get('target')?.invalid &&
-                  condition.get('target')?.touched,
-              }"
+                      [ngClass]="{
+                        'ng-invalid ng-dirty':
+                          condition.get('answerId')?.value &&
+                          condition.get('target')?.invalid &&
+                          condition.get('target')?.touched,
+                      }"
                       />
                       <p-button
                         icon="pi pi-trash"
