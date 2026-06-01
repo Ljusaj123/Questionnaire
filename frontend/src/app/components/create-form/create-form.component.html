@@ -74,17 +74,19 @@
                       condition.get('type')?.touched,
                   }"
                     />
-                    <p-select
-                      formControlName="target"
-                      placeholder="Select"
-                      [options]="getTargetsForCondition(i)"
-                      [ngClass]="{
-                        'ng-invalid ng-dirty':
-                          condition.get('answerId')?.value &&
-                          condition.get('target')?.invalid &&
-                          condition.get('target')?.touched,
-                      }"
-                      />
+                    <div>
+                      <p-select
+                        formControlName="target"
+                        placeholder="Select"
+                        [options]="getTargetsForCondition(i)"
+                        [ngClass]="{
+                          'ng-invalid ng-dirty':
+                            condition.get('answerId')?.value &&
+                            condition.get('target')?.invalid &&
+                            condition.get('target')?.touched,
+                        }"
+                        />
+                    </div>
                       <p-button
                         icon="pi pi-trash"
                         [rounded]="true"
@@ -94,14 +96,6 @@
                         severity="danger"
                         />
                       </div>
-                      @if (
-                        condition.get("answerId")?.value &&
-                        (condition.get("type")?.invalid ||
-                        condition.get("target")?.invalid) &&
-                        (condition.get("type")?.touched || condition.get("taget")?.touched)
-                        ) {
-                        <p class="text-red-500 text-sm m-1">Type and target are required</p>
-                      }
                     </div>
                   }
                   <p-button

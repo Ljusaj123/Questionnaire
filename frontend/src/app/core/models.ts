@@ -14,7 +14,6 @@ export interface Question {
 }
 export interface AnswerOption {
   label: string;
-  isFlag?: boolean;
   points?: number;
 }
 

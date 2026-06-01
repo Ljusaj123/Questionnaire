@@ -32,22 +32,6 @@ export class Option {
 
   public remove = output<void>();
 
-  constructor() {
-    effect(() => {
-      if (this.isStaticFlagType()) {
-        this.formGroup().get('isFlag')?.setValue(true, {
-          emitEvent: false, // za izbjeci infinite loop
-        });
-      }
-    });
-  }
-
-  private isStaticFlagType(): boolean {
-    return ['short-text', 'long-text', 'date', 'document'].includes(
-      this.type(),
-    );
-  }
-
   hasOptions(type: QuestionType): boolean {
     return ['radio', 'check-boxes', 'drop-down'].includes(type);
   }

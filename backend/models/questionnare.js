@@ -16,7 +16,6 @@ const ConditionTargetTypeEnum = ['Section', 'Question', null];
 const AnswerOptionSchema = new mongoose.Schema(
   {
     label: { type: String },
-    isFlag: { type: Boolean, default: false },
     points: { type: Number }
   },
   { _id: false }

@@ -31,13 +31,12 @@ import { InputTextModule } from 'primeng/inputtext';
     ConfirmDialog,
     DialogModule,
     FormsModule,
-    InputTextModule
-],
+    InputTextModule,
+  ],
   providers: [ConfirmationService],
   templateUrl: './admin.component.html',
 })
 export class Admin {
-  private router = inject(Router);
   public activeSectionId: string | null = null;
   public showCreateQuestionForm = false;
   public newQuestionId: string | null = null;
@@ -50,11 +49,12 @@ export class Admin {
 
   public questionnaireData!: () => Section[];
 
-  constructor(
-    private questionnaireService: QuestionnaireService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-  ) {
+  private router = inject(Router);
+  private questionnaireService = inject(QuestionnaireService);
+  private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
+
+  constructor() {
     this.questionnaireData = this.questionnaireService.sections;
   }
 

@@ -10,14 +10,15 @@
       </p-button>
     </div>
     <app-context-menu
-    [showQuestionOption]="activeSectionId !== null"
+      [showQuestionOption]="activeSectionId !== null"
       #menu
-      (action)="
-        handleContextMenuAction($event, activeSectionId ?? 'S-001')
-      "
+      (action)="handleContextMenuAction($event, activeSectionId ?? 'S-001')"
     ></app-context-menu>
 
-    <p-accordion (onOpen)="setActiveSection($event)" (onClose)="activeSectionId = null">
+    <p-accordion
+      (onOpen)="setActiveSection($event)"
+      (onClose)="activeSectionId = null"
+    >
       @for (
         section of questionnaireData();
         track section.sectionId;
@@ -62,8 +63,6 @@
             </div>
           </p-accordion-content>
         </p-accordion-panel>
-
-        
       }
     </p-accordion>
   </div>
@@ -102,9 +101,11 @@
   [(visible)]="showErrorDialog"
   [modal]="true"
   [style]="{ width: '400px' }"
-  (onHide)="showErrorDialog= false"
+  (onHide)="showErrorDialog = false"
 >
-  <div >
-    <p class="text-center">Sections {{sectionsWithoutQuestions}} doesn't have defined questions.</p>
+  <div>
+    <p class="text-center">
+      Sections {{ sectionsWithoutQuestions }} doesn't have defined questions.
+    </p>
   </div>
 </p-dialog>

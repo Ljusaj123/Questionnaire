@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { Condition, Question, Section } from '@core/models';
 
@@ -6,6 +6,7 @@ import { QuestionItem } from 'src/app/components/question-item/question-item.com
 
 import { ButtonModule } from 'primeng/button';
 import { QuestionnaireService } from '@core/questionnaire.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-questionnaire',
@@ -21,7 +22,10 @@ export class Questionnaire {
   public questionnaireData!: () => Section[];
   public showError: boolean = false;
 
-  constructor(private questionnaireService: QuestionnaireService) {
+  private router = inject(Router);
+  private questionnaireService = inject(QuestionnaireService);
+
+  constructor() {
     this.questionnaireData = this.questionnaireService.sections;
   }
 
@@ -34,6 +38,10 @@ export class Questionnaire {
 
   get currentAnswer() {
     return this.answersState.get(this.getKey());
+  }
+
+  backToAdmin() {
+    this.router.navigateByUrl(`/admin`);
   }
 
   onAnswerChange(value: any) {

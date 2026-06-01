@@ -157,9 +157,9 @@ export class CreateForm {
 
   private createCondition(): FormGroup {
     const group = new FormGroup({
-      answerId: new FormControl<string>(''),
-      type: new FormControl<'section' | 'question' | null>(null),
-      target: new FormControl<string>(''),
+      answerId: new FormControl<string>('', Validators.required),
+      type: new FormControl<'section' | 'question' | null>(null, Validators.required),
+      target: new FormControl<string>('', Validators.required),
     });
 
     const answerIdCtrl = group.get('answerId')!;
@@ -186,29 +186,9 @@ export class CreateForm {
   }
 
   private createOption(label: string = ''): FormGroup {
-    const isFlagCtrl = new FormControl<boolean>(false);
-    const pointsCtrl = new FormControl<number | null>({
-      value: null,
-      disabled: true,
-    });
-
     const group = new FormGroup({
       label: new FormControl<string>(label, Validators.required),
-      isFlag: isFlagCtrl,
-      points: pointsCtrl,
-    });
-
-    isFlagCtrl.valueChanges.subscribe((isFlag) => {
-      if (isFlag) {
-        pointsCtrl.enable();
-        pointsCtrl.setValidators([Validators.required, Validators.min(0)]);
-      } else {
-        pointsCtrl.reset(null);
-        pointsCtrl.clearValidators();
-        pointsCtrl.disable();
-      }
-
-      pointsCtrl.updateValueAndValidity();
+      points: new FormControl<number | null>(null),
     });
 
     return group;

@@ -7,8 +7,8 @@
     (ngModelChange)="setAnswerValues($event)"
   />
 
-  @if (answers()[0].isFlag && isAdmin()) {
-    <span class="bg-gray-200 ml-2 text-sm p-1 text-black/90"
+  @if (answers()[0].points && isAdmin()) {
+    <span class="bg-gray-200 ml-2 text-sm p-1 text-black/90 mb-1"
       >{{ answers()[0].points }}pt</span
     >
   }
