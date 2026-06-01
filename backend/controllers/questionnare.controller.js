@@ -18,6 +18,11 @@ const questionnareController = {
 		if (!question) {
 			return res.status(400).json(new RestResponse("error", "Question not provided"));
 		}
+
+		if (!sectionId) {
+			return res.status(400).json(new RestResponse("error", "Section Id not provided"));
+		}
+
 		try {
 			await QuestionnareRepository.createQuestion(question, sectionId);
 			return res.status(200).json(new RestResponse("success", "Question created successfully"));
@@ -30,8 +35,12 @@ const questionnareController = {
 	deleteQuestion: async (req, res) => {
 		const { sectionId, questionId } = req.params;
 
-		if (!sectionId || !questionId) {
-			return res.status(400).json(new RestResponse("error", "Id not provided"));
+		if (!sectionId) {
+			return res.status(400).json(new RestResponse("error", "Section Id not provided"));
+		}
+
+		if (!questionId) {
+			return res.status(400).json(new RestResponse("error", "Question Id not provided"));
 		}
 		try {
 			await QuestionnareRepository.deleteQuestion(sectionId, questionId);

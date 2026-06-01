@@ -149,7 +149,7 @@ export class CreateForm {
 
   private initializeForm(): FormGroup {
     return new FormGroup({
-      conditions: new FormArray([this.createCondition()]),
+      conditions: new FormArray([]),
       title: new FormControl<string>('', Validators.required),
       options: new FormArray([this.createOption('Option 1')]),
     });
@@ -157,7 +157,7 @@ export class CreateForm {
 
   private createCondition(): FormGroup {
     const group = new FormGroup({
-      answerId: new FormControl<string>('', Validators.required),
+      answerId: new FormControl<string | null>(null, Validators.required),
       type: new FormControl<'section' | 'question' | null>(null, Validators.required),
       target: new FormControl<string>('', Validators.required),
     });

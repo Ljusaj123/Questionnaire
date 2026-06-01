@@ -15,7 +15,7 @@ class QuestionnareRepository {
 	static async createQuestion(question, sectionId) {
 		try {
 			const section = await Section.findOne({ sectionId });
-			if (!section) throw new Error("User not found");
+			if (!section) throw new Error("Section not found");
 
 			section.questions.push(question);
 

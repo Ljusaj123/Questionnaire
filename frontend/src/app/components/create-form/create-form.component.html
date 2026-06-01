@@ -11,107 +11,134 @@
           'ng-invalid ng-dirty':
             form.get('title')?.invalid && form.get('title')?.touched,
         }"
-        />
-      </div>
-      @if (form.get("title")?.invalid && form.get("title")?.touched) {
-        <p class="text-red-500 text-sm m-1 ml-12">Question title is required</p>
-      }
-      <div formArrayName="options" class="py-2 pl-12">
-        @for (option of options.controls; let i = $index; track i) {
-          <app-option
-            [type]="type()"
-            [formGroup]="option"
-            (remove)="removeOption(i)"
-            [canRemove]="hasOptions(type()) && options.length > 1"
-          ></app-option>
-
-          @if (option.get("points")?.invalid && option.get("points")?.touched) {
-            <p class="text-red-500 text-sm m-1">
-              Points are required when Red flag is checked
-            </p>
-          }
-        }
-
-        @if (hasOptions(type())) {
-          <p-button
-            label="Add option"
-            icon="pi pi-plus"
-            styleClass="mt-4 text-sm"
-            (click)="addOption()"
-            variant="text"
-          ></p-button>
-        }
-      </div>
+      />
     </div>
-    @if (hasOptions(type())) {
-      <div class="py-4 flex flex-col">
-        <span class="font-bold mb-2">Conditional logic</span>
+    @if (form.get("title")?.invalid && form.get("title")?.touched) {
+      <p class="text-red-500 text-sm m-1 ml-12">Question title is required</p>
+    }
+    <div formArrayName="options" class="py-2 pl-12">
+      @for (option of options.controls; let i = $index; track i) {
+        <app-option
+          [type]="type()"
+          [formGroup]="option"
+          (remove)="removeOption(i)"
+          [canRemove]="hasOptions(type()) && options.length > 1"
+        ></app-option>
 
-        <div formArrayName="conditions" class="pl-12">
-          @for (condition of conditions.controls; track condition; let i = $index) {
-            <div
-              class="flex flex-col"
-              [formGroupName]="i"
-              >
-              <div class="flex flex-wrap items-center gap-2">
-                <span>If</span>
+        @if (option.get("points")?.invalid && option.get("points")?.touched) {
+          <p class="text-red-500 text-sm m-1">
+            Points are required when Red flag is checked
+          </p>
+        }
+      }
+
+      @if (hasOptions(type())) {
+        <p-button
+          label="Add option"
+          icon="pi pi-plus"
+          styleClass="mt-4 text-sm"
+          (click)="addOption()"
+          variant="text"
+        ></p-button>
+      }
+    </div>
+  </div>
+  @if (hasOptions(type())) {
+    <div class="py-4 flex flex-col">
+      <span class="font-bold mb-2">Conditional logic</span>
+
+      <div formArrayName="conditions" class="pl-12">
+        @for (
+          condition of conditions.controls;
+          track condition;
+          let i = $index
+        ) {
+          <div class="flex flex-col" [formGroupName]="i">
+            <div class="flex flex-wrap items-center gap-2">
+              <span>If</span>
+              <div class="flex flex-col gap-1">
                 <p-select
                   [showClear]="true"
                   formControlName="answerId"
                   placeholder="Select option"
                   [options]="getAvailableConditionOptions()"
-                  />
-                  <span>then open</span>
-                  <p-select
-                    formControlName="type"
-                    placeholder="Select"
-                    (onChange)="handleSelection(i)"
-                    [options]="['Section', 'Question']"
-                    [ngClass]="{
+                  [ngClass]="{
                     'ng-invalid ng-dirty':
-                      condition.get('answerId')?.value &&
+                      condition.get('answerId')?.invalid &&
+                      condition.get('answerId')?.touched,
+                  }"
+                />
+                @if (
+                  condition.get("answerId")?.invalid &&
+                  condition.get("answerId")?.touched
+                ) {
+                  <span class="text-red-500 text-sm">Answer is required</span>
+                }
+              </div>
+              <span>then open</span>
+              <div class="flex flex-col gap-1">
+                <p-select
+                  formControlName="type"
+                  placeholder="Select"
+                  (onChange)="handleSelection(i)"
+                  [options]="['Section', 'Question']"
+                  [ngClass]="{
+                    'ng-invalid ng-dirty':
                       condition.get('type')?.invalid &&
                       condition.get('type')?.touched,
                   }"
-                    />
-                    <div>
-                      <p-select
-                        formControlName="target"
-                        placeholder="Select"
-                        [options]="getTargetsForCondition(i)"
-                        [ngClass]="{
-                          'ng-invalid ng-dirty':
-                            condition.get('answerId')?.value &&
-                            condition.get('target')?.invalid &&
-                            condition.get('target')?.touched,
-                        }"
-                        />
-                    </div>
-                      <p-button
-                        icon="pi pi-trash"
-                        [rounded]="true"
-                        [text]="true"
-                        (click)="removeCondition(i)"
-                        title="Remove condition"
-                        severity="danger"
-                        />
-                      </div>
-                    </div>
-                  }
-                  <p-button
-                    label="Add condition"
-                    icon="pi pi-plus"
-                    styleClass="mt-4 text-sm"
-                    [text]="true"
-                    (click)="addCondition()"
-                    />
-                  </div>
-                </div>
-              }
-              <div class="flex justify-end gap-2 items-center">
-                <p-button (onClick)="this.onCancel.emit()" severity="secondary"
-                  >Cancel</p-button
-                  >
-                  <p-button (onClick)="handleCreateQestion()">Create</p-button>
-                </div>
-              </form>
+                />
+                @if (
+                  condition.get("type")?.invalid &&
+                  condition.get("type")?.touched
+                ) {
+                  <span class="text-red-500 text-sm">Type is required</span>
+                }
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <p-select
+                  formControlName="target"
+                  placeholder="Select"
+                  [options]="getTargetsForCondition(i)"
+                  [ngClass]="{
+                    'ng-invalid ng-dirty':
+                      condition.get('target')?.invalid &&
+                      condition.get('target')?.touched,
+                  }"
+                />
+                @if (
+                  condition.get("target")?.invalid &&
+                  condition.get("target")?.touched
+                ) {
+                  <span class="text-red-500 text-sm">Target is required</span>
+                }
+              </div>
+              <p-button
+                icon="pi pi-trash"
+                [rounded]="true"
+                [text]="true"
+                (click)="removeCondition(i)"
+                title="Remove condition"
+                severity="danger"
+              />
+            </div>
+          </div>
+        }
+        <p-button
+          label="Add condition"
+          icon="pi pi-plus"
+          styleClass="mt-4 text-sm"
+          [text]="true"
+          (click)="addCondition()"
+        />
+      </div>
+    </div>
+  }
+  <div class="flex justify-end gap-2 items-center">
+    <p-button (onClick)="this.onCancel.emit()" severity="secondary"
+      >Cancel</p-button
+    >
+    <p-button (onClick)="handleCreateQestion()">Create</p-button>
+  </div>
+</form>
